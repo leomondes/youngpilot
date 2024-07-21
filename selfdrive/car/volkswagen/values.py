@@ -329,7 +329,7 @@ class CAR(Platforms):
       VWCarDocs("Volkswagen Tiguan 2018-24"),
       VWCarDocs("Volkswagen Tiguan eHybrid 2021-23"),
     ],
-    VolkswagenCarSpecs(mass=1715, wheelbase=2.74),
+    VolkswagenCarSpecs(mass=1715, wheelbase=2.74, steerRatio=16.4),
     chassis_codes={"5N", "AD", "AX", "BW"},
     wmis={WMI.VOLKSWAGEN_EUROPE_SUV, WMI.VOLKSWAGEN_MEXICO_SUV},
   )
