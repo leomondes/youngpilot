@@ -95,7 +95,7 @@ class ParamsLearner:
       self.steering_angle = msg.steeringAngleDeg
       self.speed = msg.vEgo
 
-      complex_dynamics = abs(msg.aEgo) > 1.0 or abs(msg.steeringRateDeg) > 20
+      complex_dynamics = abs(msg.aEgo) > 0.5 or abs(msg.steeringRateDeg) > 20
       in_linear_region = abs(self.steering_angle) < 45
       self.active = self.speed > MIN_ACTIVE_SPEED and in_linear_region and not complex_dynamics
 
