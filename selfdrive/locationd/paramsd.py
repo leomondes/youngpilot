@@ -120,7 +120,7 @@ def check_valid_with_hysteresis(current_valid: bool, val: float, threshold: floa
 def main():
   config_realtime_process([0, 1, 2, 3], 5)
 
-  DEBUG = bool(int(os.getenv("DEBUG", "0")))
+  DEBUG = True
   REPLAY = bool(int(os.getenv("REPLAY", "0")))
 
   pm = messaging.PubMaster(['liveParameters'])
