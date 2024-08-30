@@ -43,7 +43,7 @@ class LatControlTorque(LatControl):
       output_torque = 0.0
       pid_log.active = False
     else:
-      actual_curvature_vm = -VM.calc_curvature(math.radians(CS.steeringAngleDeg - params.angleOffsetDeg), CS.vEgo, 0.0)
+      actual_curvature_vm = -VM.calc_curvature(math.radians(CS.steeringAngleDeg - params.angleOffsetDeg), CS.vEgo, params.roll)
       roll_compensation = params.roll * ACCELERATION_DUE_TO_GRAVITY
       if self.use_steering_angle:
         actual_curvature = actual_curvature_vm

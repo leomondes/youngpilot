@@ -735,7 +735,7 @@ class Controls:
     lp = self.sm['liveParameters']
 
     steer_angle_without_offset = math.radians(CS.steeringAngleDeg - lp.angleOffsetDeg)
-    curvature = -self.VM.calc_curvature(steer_angle_without_offset, CS.vEgo, 0.0)
+    curvature = -self.VM.calc_curvature(steer_angle_without_offset, CS.vEgo, lp.roll)
 
     # controlsState
     dat = messaging.new_message('controlsState')
