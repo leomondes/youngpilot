@@ -211,6 +211,7 @@ struct CarState {
 
   # gear
   gearShifter @14 :GearShifter;
+  driveMode @55 :DriveMode;
 
   # button presses
   buttonEvents @11 :List(ButtonEvent);
@@ -264,6 +265,14 @@ struct CarState {
     brake @7;
     eco @8;
     manumatic @9;
+  }
+
+  enum DriveMode {
+    unknown @0;
+    park @1;
+    drive @2;
+    neutral @3;
+    reverse @4;
   }
 
   # send on change
