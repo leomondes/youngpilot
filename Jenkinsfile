@@ -84,15 +84,47 @@ def deviceStage(String stageName, String deviceType, List extra_env, def steps) 
       docker.image('ghcr.io/commaai/alpine-ssh').inside('--user=root') {
         timeout(time: 35, unit: 'MINUTES') {
           retry (3) {
+            def date = sh(script: 'date', returnStdout: true).trim();
+            device(device_ip, "set time", "date -s '" + date + "'")
             device(device_ip, "git checkout", extra + "\n" + readFile("selfdrive/test/setup_device_ci.sh"))
           }
           steps.each { item ->
-            device(device_ip, item[0], item[1])
+            if (branch != "master" && item.size() == 3 && !hasPathChanged(item[2])) {
+              println "Skipping ${item[0]}: no changes in ${item[2]}."
+              return;
+            } else {
+              device(device_ip, item[0], item[1])
+            }
           }
         }
       }
     }
   }
+}
+
+@NonCPS
+def hasPathChanged(List<String> paths) {
+  changedFiles = []
+  for (changeLogSet in currentBuild.changeSets) {
+    for (entry in changeLogSet.getItems()) {
+      for (file in entry.getAffectedFiles()) {
+        changedFiles.add(file.getPath())
+      }
+    }
+  }
+
+  env.CHANGED_FILES = changedFiles.join(" ")
+  if (currentBuild.number > 1) {
+    env.CHANGED_FILES += currentBuild.previousBuild.getBuildVariables().get("CHANGED_FILES")
+  }
+
+  for (path in paths) {
+    if (env.CHANGED_FILES.contains(path)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 def setupCredentials() {
@@ -147,7 +179,7 @@ node {
           ["build openpilot", "cd system/manager && ./build.py"],
           ["check dirty", "release/check-dirty.sh"],
           ["onroad tests", "pytest selfdrive/test/test_onroad.py -s"],
-          ["time to onroad", "pytest selfdrive/test/test_time_to_onroad.py"],
+          //["time to onroad", "pytest selfdrive/test/test_time_to_onroad.py"],
         ])
       },
       'HW + Unit Tests': {

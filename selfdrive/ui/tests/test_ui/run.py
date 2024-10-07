@@ -19,7 +19,7 @@ from openpilot.common.prefix import OpenpilotPrefix
 from openpilot.common.transformations.camera import CameraConfig, DEVICE_CAMERAS
 from openpilot.selfdrive.selfdrived.alertmanager import set_offroad_alert
 from openpilot.selfdrive.test.helpers import with_processes
-from openpilot.selfdrive.test.process_replay.migration import migrate_controlsState
+from openpilot.selfdrive.test.process_replay.migration import migrate, migrate_controlsState, migrate_carState
 from openpilot.tools.lib.logreader import LogReader
 from openpilot.tools.lib.framereader import FrameReader
 from openpilot.tools.lib.route import Route
@@ -76,6 +76,17 @@ def setup_onroad(click, pm: PubMaster):
 
     packet_id += 1
     time.sleep(0.05)
+
+def setup_onroad_disengaged(click, pm: PubMaster):
+  DATA['selfdriveState'].selfdriveState.enabled = False
+  setup_onroad(click, pm)
+  DATA['selfdriveState'].selfdriveState.enabled = True
+
+def setup_onroad_override(click, pm: PubMaster):
+  DATA['selfdriveState'].selfdriveState.state = log.SelfdriveState.OpenpilotState.overriding
+  setup_onroad(click, pm)
+  DATA['selfdriveState'].selfdriveState.state = log.SelfdriveState.OpenpilotState.enabled
+
 
 def setup_onroad_wide(click, pm: PubMaster):
   DATA['selfdriveState'].selfdriveState.experimentalMode = True
@@ -165,6 +176,8 @@ CASES = {
   "settings_device": setup_settings_device,
   "settings_toggles": setup_settings_toggles,
   "onroad": setup_onroad,
+  "onroad_disengaged": setup_onroad_disengaged,
+  "onroad_override": setup_onroad_override,
   "onroad_sidebar": setup_onroad_sidebar,
   "onroad_alert_small": setup_onroad_alert_small,
   "onroad_alert_mid": setup_onroad_alert_mid,
@@ -250,7 +263,7 @@ def create_screenshots():
   segnum = 2
   lr = LogReader(route.qlog_paths()[segnum])
   DATA['carParams'] = next((event.as_builder() for event in lr if event.which() == 'carParams'), None)
-  for event in migrate_controlsState(lr):
+  for event in migrate(lr, [migrate_controlsState, migrate_carState]):
     if event.which() in DATA:
       DATA[event.which()] = event.as_builder()
 
