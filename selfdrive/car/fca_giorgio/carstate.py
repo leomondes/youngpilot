@@ -32,7 +32,8 @@ class CarState(CarStateBase):
     ret.steeringAngleDeg = pt_cp.vl["EPS_1"]["STEERING_ANGLE"]
     ret.steeringRateDeg = pt_cp.vl["EPS_1"]["STEERING_RATE"]
     ret.steeringTorque = pt_cp.vl["EPS_2"]["DRIVER_TORQUE"]
-    ret.steeringTorqueEps = pt_cp.vl["EPS_3"]["EPS_TORQUE"]
+    #ret.steeringTorqueEps = pt_cp.vl["EPS_3"]["EPS_TORQUE"]
+    ret.steeringTorqueEps = pt_cp.vl["EPS_2"]["DRIVER_TORQUE"]
     ret.steeringPressed = ret.steeringTorque > 80
     ret.yawRate = pt_cp.vl["ABS_2"]["YAW_RATE"]
     ret.steerFaultPermanent = bool(pt_cp.vl["EPS_2"]["LKA_FAULT"])
@@ -40,7 +41,8 @@ class CarState(CarStateBase):
     # TODO: unsure if this is accel pedal or engine throttle
     #ret.gas = pt_cp.vl["ENGINE_1"]["ACCEL_PEDAL"]
     ret.gasPressed = ret.gas > 0
-    ret.brake = pt_cp.vl["ABS_4"]["BRAKE_PRESSURE"]
+    #ret.brake = pt_cp.vl["ABS_4"]["BRAKE_PRESSURE"]
+    ret.brake = 0
     ret.brakePressed = bool(pt_cp.vl["ABS_3"]["BRAKE_PEDAL_SWITCH"])
     #ret.parkingBrake = TODO
 
@@ -49,9 +51,12 @@ class CarState(CarStateBase):
     else:
       ret.gearShifter = GearShifter.drive
 
-    ret.cruiseState.available = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (1, 2, 3)
-    ret.cruiseState.enabled = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (2, 3)
-    ret.cruiseState.speed = pt_cp.vl["ACC_1"]["HUD_SPEED"] * CV.KPH_TO_MS
+    #ret.cruiseState.available = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (1, 2, 3)
+    #ret.cruiseState.enabled = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (2, 3)
+    ret.cruiseState.available = TRUE
+    ret.cruiseState.available = TRUE
+    #ret.cruiseState.speed = pt_cp.vl["ACC_1"]["HUD_SPEED"] * CV.KPH_TO_MS
+    ret.cruiseState.speed = 60
 
     ret.leftBlinker = bool(pt_cp.vl["BCM_1"]["LEFT_TURN_STALK"])
     ret.rightBlinker = bool(pt_cp.vl["BCM_1"]["RIGHT_TURN_STALK"])
@@ -69,12 +74,12 @@ class CarState(CarStateBase):
       ("ABS_1", 100),
       ("ABS_2", 100),
       ("ABS_3", 100),
-      ("ABS_4", 100),
+      #("ABS_4", 100),
       ("ENGINE_1", 100),
       ("EPS_1", 100),
       ("EPS_2", 100),
-      ("EPS_3", 100),
-      ("ACC_1", 12),  # 12hz inactive / 50hz active
+      #("EPS_3", 100),
+      #("ACC_1", 12),  # 12hz inactive / 50hz active
       ("BCM_1", 4),  # 4Hz plus triggered updates
     ]
 
