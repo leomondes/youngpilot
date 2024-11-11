@@ -41,8 +41,7 @@ class CarState(CarStateBase):
     # TODO: unsure if this is accel pedal or engine throttle
     #ret.gas = pt_cp.vl["ENGINE_1"]["ACCEL_PEDAL"]
     ret.gasPressed = ret.gas > 0
-    #ret.brake = pt_cp.vl["ABS_4"]["BRAKE_PRESSURE"]
-    ret.brake = 0
+    ret.brake = pt_cp.vl["ABS_4"]["BRAKE_PRESSURE"]
     ret.brakePressed = bool(pt_cp.vl["ABS_3"]["BRAKE_PEDAL_SWITCH"])
     #ret.parkingBrake = TODO
 
@@ -54,7 +53,7 @@ class CarState(CarStateBase):
     #ret.cruiseState.available = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (1, 2, 3)
     #ret.cruiseState.enabled = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (2, 3)
     ret.cruiseState.available = TRUE
-    ret.cruiseState.available = TRUE
+    ret.cruiseState.enabled = TRUE
     #ret.cruiseState.speed = pt_cp.vl["ACC_1"]["HUD_SPEED"] * CV.KPH_TO_MS
     ret.cruiseState.speed = 60
 
