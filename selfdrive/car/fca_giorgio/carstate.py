@@ -52,7 +52,7 @@ class CarState(CarStateBase):
 
     #ret.cruiseState.available = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (1, 2, 3)
     #ret.cruiseState.enabled = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (2, 3)
-    ret.cruiseState.available = False
+    ret.cruiseState.available = True
     ret.cruiseState.enabled = False
     #ret.cruiseState.speed = pt_cp.vl["ACC_1"]["HUD_SPEED"] * CV.KPH_TO_MS
     ret.cruiseState.speed = 10
