@@ -73,7 +73,7 @@ class CarState(CarStateBase):
       ("ABS_1", 100),
       ("ABS_2", 100),
       ("ABS_3", 100),
-      #("ABS_4", 100),
+      ("ABS_4", 100),
       ("ENGINE_1", 100),
       ("EPS_1", 100),
       ("EPS_2", 100),
