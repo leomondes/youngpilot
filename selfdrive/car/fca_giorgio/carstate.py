@@ -55,7 +55,7 @@ class CarState(CarStateBase):
     ret.cruiseState.available = TRUE
     ret.cruiseState.enabled = TRUE
     #ret.cruiseState.speed = pt_cp.vl["ACC_1"]["HUD_SPEED"] * CV.KPH_TO_MS
-    ret.cruiseState.speed = 60
+    ret.cruiseState.speed = 10
 
     ret.leftBlinker = bool(pt_cp.vl["BCM_1"]["LEFT_TURN_STALK"])
     ret.rightBlinker = bool(pt_cp.vl["BCM_1"]["RIGHT_TURN_STALK"])
