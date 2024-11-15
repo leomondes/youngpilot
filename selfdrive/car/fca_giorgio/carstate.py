@@ -14,7 +14,7 @@ class CarState(CarStateBase):
     self.frame = 0
     self.CCP = CarControllerParams(CP)
 
-  def update(self, pt_cp, cam_cp):
+  def update(self, pt_cp, cam_cp, cp_body):
     ret = car.CarState.new_message()
     # Update vehicle speed and acceleration from ABS wheel speeds.
     ret.wheelSpeeds = self.get_wheel_speeds(
@@ -53,6 +53,10 @@ class CarState(CarStateBase):
     #ret.cruiseState.enabled = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (2, 3)
     #ret.cruiseState.speed = pt_cp.vl["ACC_1"]["HUD_SPEED"] * CV.KPH_TO_MS
 
+    ret.cruiseState.available = cp_body.vl["ACC_4"]["ACC_AVAILABLE"] in (1)
+    ret.cruiseState.enabled = cp_body.vl["ACC_2"]["ACC_ACTIVE"] in (6, 7, 8)
+    ret.cruiseState.speed = cp_body.vl["ACC_4"]["ACC_SPEED"] * CV.KPH_TO_MS
+
     ret.leftBlinker = bool(pt_cp.vl["BCM_1"]["LEFT_TURN_STALK"])
     ret.rightBlinker = bool(pt_cp.vl["BCM_1"]["RIGHT_TURN_STALK"])
     # ret.buttonEvents = TODO
@@ -73,8 +77,6 @@ class CarState(CarStateBase):
       ("ENGINE_1", 100),
       ("EPS_1", 100),
       ("EPS_2", 100),
-      #("EPS_3", 100),
-      #("ACC_1", 12),  # 12hz inactive / 50hz active
       ("BCM_1", 4),  # 4Hz plus triggered updates
     ]
 
@@ -89,6 +91,11 @@ class CarState(CarStateBase):
 
   @staticmethod
   def get_body_can_parser(CP):
-    messages = []
+    messages = [
+      # sig_address, frequency
+      ("ACC_2", 100),
+      ("ACC_3", 100),
+      ("ACC_4", 100),
+    ]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, CANBUS.body)
