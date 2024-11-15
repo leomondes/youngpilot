@@ -39,8 +39,9 @@ class CarState(CarStateBase):
     ret.steerFaultPermanent = bool(pt_cp.vl["EPS_2"]["LKA_FAULT"])
 
     # TODO: unsure if this is accel pedal or engine throttle
-    #ret.gas = pt_cp.vl["ENGINE_1"]["ACCEL_PEDAL"]
-    ret.gasPressed = ret.gas > 0
+    ret.gas = pt_cp.vl["ENGINE_1"]["ACCEL_PEDAL"]
+    ret.gasfoot = pt_cp.vl["ENGINE_2"]["ACCEL_PEDAL_FOOT"]
+    ret.gasPressed = ret.gasfoot > 0
     ret.brake = pt_cp.vl["ABS_4"]["BRAKE_PRESSURE"]
     ret.brakePressed = bool(pt_cp.vl["ABS_3"]["BRAKE_PEDAL_SWITCH"])
     #ret.parkingBrake = TODO
@@ -53,9 +54,13 @@ class CarState(CarStateBase):
     #ret.cruiseState.available = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (1, 2, 3)
     #ret.cruiseState.enabled = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (2, 3)
     ret.cruiseState.available = True
-    ret.cruiseState.enabled = ret.vEgo > 15
+    if (ret.gasfoot == 0 and ret.gas > 0):
+      ret.cruiseState.enabled = True
+    else
+      ret.cruiseState.enabled = False
+
     #ret.cruiseState.speed = pt_cp.vl["ACC_1"]["HUD_SPEED"] * CV.KPH_TO_MS
-    ret.cruiseState.speed = 10
+    ret.cruiseState.speed = 0
 
     ret.leftBlinker = bool(pt_cp.vl["BCM_1"]["LEFT_TURN_STALK"])
     ret.rightBlinker = bool(pt_cp.vl["BCM_1"]["RIGHT_TURN_STALK"])
@@ -75,6 +80,7 @@ class CarState(CarStateBase):
       ("ABS_3", 100),
       ("ABS_4", 100),
       ("ENGINE_1", 100),
+      ("ENGINE_2", 100),
       ("EPS_1", 100),
       ("EPS_2", 100),
       #("EPS_3", 100),
