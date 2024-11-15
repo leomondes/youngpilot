@@ -33,15 +33,13 @@ class CarState(CarStateBase):
     ret.steeringRateDeg = pt_cp.vl["EPS_1"]["STEERING_RATE"]
     ret.steeringTorque = pt_cp.vl["EPS_2"]["DRIVER_TORQUE"]
     #ret.steeringTorqueEps = pt_cp.vl["EPS_3"]["EPS_TORQUE"]
-    ret.steeringTorqueEps = pt_cp.vl["EPS_2"]["DRIVER_TORQUE"]
     ret.steeringPressed = ret.steeringTorque > 80
     ret.yawRate = pt_cp.vl["ABS_2"]["YAW_RATE"]
     ret.steerFaultPermanent = bool(pt_cp.vl["EPS_2"]["LKA_FAULT"])
 
     # TODO: unsure if this is accel pedal or engine throttle
-    ret.gas = pt_cp.vl["ENGINE_1"]["ACCEL_PEDAL"]
-    ret.gasfoot = pt_cp.vl["ENGINE_2"]["ACCEL_PEDAL_FOOT"]
-    ret.gasPressed = ret.gasfoot > 0
+    #ret.gas = pt_cp.vl["ENGINE_1"]["ACCEL_PEDAL"]
+    ret.gasPressed = ret.gas > 0
     ret.brake = pt_cp.vl["ABS_4"]["BRAKE_PRESSURE"]
     ret.brakePressed = bool(pt_cp.vl["ABS_3"]["BRAKE_PEDAL_SWITCH"])
     #ret.parkingBrake = TODO
@@ -53,11 +51,7 @@ class CarState(CarStateBase):
 
     #ret.cruiseState.available = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (1, 2, 3)
     #ret.cruiseState.enabled = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (2, 3)
-    ret.cruiseState.available = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (1, 2, 3)
-    ret.cruiseState.enabled = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (2, 3)
-
     #ret.cruiseState.speed = pt_cp.vl["ACC_1"]["HUD_SPEED"] * CV.KPH_TO_MS
-    ret.cruiseState.speed = 0
 
     ret.leftBlinker = bool(pt_cp.vl["BCM_1"]["LEFT_TURN_STALK"])
     ret.rightBlinker = bool(pt_cp.vl["BCM_1"]["RIGHT_TURN_STALK"])
@@ -77,7 +71,6 @@ class CarState(CarStateBase):
       ("ABS_3", 100),
       ("ABS_4", 100),
       ("ENGINE_1", 100),
-      ("ENGINE_2", 100),
       ("EPS_1", 100),
       ("EPS_2", 100),
       #("EPS_3", 100),
@@ -93,9 +86,3 @@ class CarState(CarStateBase):
     messages = []
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, CANBUS.cam)
-
- @staticmethod
- def get_body_can_parser(CP):
-    messages = []
-
-    return CANParser(DBC[CP.carFingerprint]["pt"], messages, CANBUS.body)
