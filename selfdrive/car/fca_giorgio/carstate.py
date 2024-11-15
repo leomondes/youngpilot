@@ -53,11 +53,8 @@ class CarState(CarStateBase):
 
     #ret.cruiseState.available = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (1, 2, 3)
     #ret.cruiseState.enabled = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (2, 3)
-    ret.cruiseState.available = True
-    if (ret.gasfoot == 0 and ret.gas > 0):
-      ret.cruiseState.enabled = True
-    else
-      ret.cruiseState.enabled = False
+    ret.cruiseState.available = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (1, 2, 3)
+    ret.cruiseState.enabled = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (2, 3)
 
     #ret.cruiseState.speed = pt_cp.vl["ACC_1"]["HUD_SPEED"] * CV.KPH_TO_MS
     ret.cruiseState.speed = 0
@@ -96,3 +93,9 @@ class CarState(CarStateBase):
     messages = []
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, CANBUS.cam)
+
+ @staticmethod
+  def get_body_can_parser(CP):
+    messages = []
+
+    return CANParser(DBC[CP.carFingerprint]["pt"], messages, CANBUS.body)
