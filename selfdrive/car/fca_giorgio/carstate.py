@@ -86,3 +86,9 @@ class CarState(CarStateBase):
     messages = []
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, CANBUS.cam)
+
+  @staticmethod
+  def get_body_can_parser(CP):
+    messages = []
+
+    return CANParser(DBC[CP.carFingerprint]["pt"], messages, CANBUS.body)
