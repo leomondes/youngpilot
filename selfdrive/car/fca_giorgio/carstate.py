@@ -76,6 +76,7 @@ class CarState(CarStateBase):
       ("ABS_3", 100),
       ("ABS_4", 100),
       ("ENGINE_1", 100),
+      ("ENGINE_2", 100),
       ("EPS_1", 100),
       ("EPS_2", 100),
       ("BCM_1", 4),  # 4Hz plus triggered updates
