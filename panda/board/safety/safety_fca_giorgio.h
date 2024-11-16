@@ -17,9 +17,9 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
 #define FCA_GIORGIO_LKA_HUD_1       0x4AE
 #define FCA_GIORGIO_LKA_HUD_2       0x547
 //#define FCA_GIORGIO_ACC_1           0x5A2
-#define FCA_GIORGIO_ACC_2           1x1F2
-#define FCA_GIORGIO_ACC_3           1x2FA
-#define FCA_GIORGIO_ACC_4           1x73C
+#define FCA_GIORGIO_ACC_2           0x1F2
+#define FCA_GIORGIO_ACC_3           0x2FA
+#define FCA_GIORGIO_ACC_4           0x73C
 
 // TODO: need to find a button message for cancel spam
 const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 8}, {FCA_GIORGIO_LKA_HUD_1, 0, 8}, {FCA_GIORGIO_LKA_HUD_2, 0, 8}};
