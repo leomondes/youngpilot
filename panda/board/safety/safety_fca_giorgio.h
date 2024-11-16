@@ -22,7 +22,7 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
 #define FCA_GIORGIO_ACC_4           0x73C
 
 // TODO: need to find a button message for cancel spam
-const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 8}, {FCA_GIORGIO_LKA_HUD_2, 0, 8}};
+const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 4}, {FCA_GIORGIO_LKA_HUD_2, 0, 8}};
 
 // TODO: need to find a message for driver gas
 // TODO: re-check counter/checksum for ABS_3
