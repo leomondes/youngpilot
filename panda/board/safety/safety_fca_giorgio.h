@@ -12,11 +12,14 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
 
 #define FCA_GIORGIO_ABS_1           0xEE
 #define FCA_GIORGIO_ABS_3           0xFA
-#define FCA_GIORGIO_EPS_3           0x122
+//#define FCA_GIORGIO_EPS_3           0x122
 #define FCA_GIORGIO_LKA_COMMAND     0x1F6
 #define FCA_GIORGIO_LKA_HUD_1       0x4AE
 #define FCA_GIORGIO_LKA_HUD_2       0x547
-#define FCA_GIORGIO_ACC_1           0x5A2
+//#define FCA_GIORGIO_ACC_1           0x5A2
+#define FCA_GIORGIO_ACC_2           1x1F2
+#define FCA_GIORGIO_ACC_3           1x2FA
+#define FCA_GIORGIO_ACC_4           1x73C
 
 // TODO: need to find a button message for cancel spam
 const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 8}, {FCA_GIORGIO_LKA_HUD_1, 0, 8}, {FCA_GIORGIO_LKA_HUD_2, 0, 8}};
@@ -28,7 +31,7 @@ RxCheck fca_giorgio_rx_checks[] = {
   {.msg = {{FCA_GIORGIO_ACC_1, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 12U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ABS_1, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_EPS_3, 0, 4, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
+  //{.msg = {{FCA_GIORGIO_EPS_3, 0, 4, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
 };
 
 uint8_t fca_giorgio_crc8_lut_j1850[256];  // Static lookup table for CRC8 SAE J1850
@@ -88,18 +91,33 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
 
     // Update driver input torque samples
     // Signal: EPS_3.EPS_TORQUE
-    if (addr == FCA_GIORGIO_EPS_3) {
-      int torque_driver_new = ((GET_BYTE(to_push, 1) >> 4) | (GET_BYTE(to_push, 0) << 4)) - 2048U;
-      update_sample(&torque_driver, torque_driver_new);
-    }
+    //if (addr == FCA_GIORGIO_EPS_3) {
+    //  int torque_driver_new = ((GET_BYTE(to_push, 1) >> 4) | (GET_BYTE(to_push, 0) << 4)) - 2048U;
+    //  update_sample(&torque_driver, torque_driver_new);
+    //}
 
-    if (addr == FCA_GIORGIO_ACC_1) {
+    //if (addr == FCA_GIORGIO_ACC_1) {
       // When using stock ACC, enter controls on rising edge of stock ACC engage, exit on disengage
       // Always exit controls on main switch off
       // Signal: ACC_1.CRUISE_STATUS
-      int acc_status = (GET_BYTE(to_push, 2) & 0x60U) >> 5;
-      bool cruise_engaged = (acc_status == 2) || (acc_status == 3);
-      acc_main_on = cruise_engaged || (acc_status == 1);
+    //  int acc_status = (GET_BYTE(to_push, 2) & 0x60U) >> 5;
+    //  bool cruise_engaged = (acc_status == 2) || (acc_status == 3);
+    //  acc_main_on = cruise_engaged || (acc_status == 1);
+
+    //  pcm_cruise_check(cruise_engaged);
+
+    //  if (!acc_main_on) {
+    //    controls_allowed = false;
+    //  }
+    //}
+
+    if (addr == FCA_GIORGIO_ACC_2) {
+      // When using stock ACC, enter controls on rising edge of stock ACC engage, exit on disengage
+      // Always exit controls on main switch off
+      // Signal: ACC_1.CRUISE_STATUS
+      int acc_status = (GET_BYTE(to_push, 4) & 1x0FU);
+      bool cruise_engaged = (acc_status == 6) || (acc_status == 7) || (acc_status == 8);
+      acc_main_on = cruise_engaged;
 
       pcm_cruise_check(cruise_engaged);
 
