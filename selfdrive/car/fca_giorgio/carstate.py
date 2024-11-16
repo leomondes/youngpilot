@@ -95,7 +95,7 @@ class CarState(CarStateBase):
   def get_body_can_parser(CP):
     messages = [
       # sig_address, frequency
-      ("ACC_2", 100),
+      ("ACC_2", 50), #from cabana
       ("ACC_3", 100),
       ("ACC_4", 100),
     ]
