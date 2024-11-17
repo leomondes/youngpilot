@@ -35,7 +35,7 @@ RxCheck fca_giorgio_rx_checks[] = {
   {.msg = {{FCA_GIORGIO_ABS_1, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   //{.msg = {{FCA_GIORGIO_EPS_3, 0, 4, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_EPS_2, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
+  //{.msg = {{FCA_GIORGIO_EPS_2, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
 };
 
 uint8_t fca_giorgio_crc8_lut_j1850[256];  // Static lookup table for CRC8 SAE J1850
@@ -100,10 +100,10 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
     //  update_sample(&torque_driver, torque_driver_new);
     //}
   
-    if (addr == FCA_GIORGIO_EPS_2) {
-      int torque_driver_new = ((GET_BYTE(to_push, 3) >> 5) | (GET_BYTE(to_push, 2) << 3)) - 1024U;
-      update_sample(&torque_driver, torque_driver_new);
-    }
+    //if (addr == FCA_GIORGIO_EPS_2) {
+    //  int torque_driver_new = ((GET_BYTE(to_push, 3) >> 5) | (GET_BYTE(to_push, 2) << 3)) - 1024U;
+    //  update_sample(&torque_driver, torque_driver_new);
+    //}
 
     //if (addr == FCA_GIORGIO_ACC_1) {
       // When using stock ACC, enter controls on rising edge of stock ACC engage, exit on disengage
