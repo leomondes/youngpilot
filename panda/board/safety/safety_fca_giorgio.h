@@ -21,9 +21,10 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
 #define FCA_GIORGIO_ACC_3           0x2FA
 #define FCA_GIORGIO_ACC_4           0x73C
 #define FCA_GIORGIO_LKA_COMMAND_2   0x228
+#define FCA_GIORGIO_EPS_2           0x106
 
 // TODO: need to find a button message for cancel spam
-const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 4}, {FCA_GIORGIO_LKA_HUD_2, 0, 8}, {FCA_GIORGIO_LKA_COMMAND_2, 0, 8}};
+const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 4}, {FCA_GIORGIO_LKA_HUD_2, 0, 8}};
 
 // TODO: need to find a message for driver gas
 // TODO: re-check counter/checksum for ABS_3
@@ -97,6 +98,11 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
     //  int torque_driver_new = ((GET_BYTE(to_push, 1) >> 4) | (GET_BYTE(to_push, 0) << 4)) - 2048U;
     //  update_sample(&torque_driver, torque_driver_new);
     //}
+  
+    if (addr == FCA_GIORGIO_EPS_2) {
+      int torque_driver_new = ((GET_BYTE(to_push, 3) >> 5) | (GET_BYTE(to_push, 2) << 3)) - 1024U;
+      update_sample(&torque_driver, torque_driver_new);
+    }
 
     //if (addr == FCA_GIORGIO_ACC_1) {
       // When using stock ACC, enter controls on rising edge of stock ACC engage, exit on disengage
@@ -149,7 +155,7 @@ static bool fca_giorgio_tx_hook(const CANPacket_t *to_send) {
   // Signal: LKA_COMMAND.
   // Signal: HCA_01.HCA_01_LM_OffSign (direction)
   if (addr == FCA_GIORGIO_LKA_COMMAND) {
-    int desired_torque = ((GET_BYTE(to_send, 1) >> 5) | (GET_BYTE(to_send, 0) << 8)) - 1024U;
+    int desired_torque = ((GET_BYTE(to_send, 1) >> 5) | (GET_BYTE(to_send, 0) << 3)) - 1024U;
     bool steer_req = GET_BIT(to_send, 11U);
 
     if (steer_torque_cmd_checks(desired_torque, steer_req, FCA_GIORGIO_STEERING_LIMITS)) {
@@ -173,7 +179,7 @@ static int fca_giorgio_fwd_hook(int bus_num, int addr) {
       bus_fwd = 2;
       break;
     case 2:
-      if ((addr == FCA_GIORGIO_LKA_COMMAND) || (addr == FCA_GIORGIO_LKA_HUD_2) || (addr == FCA_GIORGIO_LKA_COMMAND_2)) {
+      if ((addr == FCA_GIORGIO_LKA_COMMAND) || (addr == FCA_GIORGIO_LKA_HUD_2)) {
         bus_fwd = -1;
       } else {
         bus_fwd = 0;
