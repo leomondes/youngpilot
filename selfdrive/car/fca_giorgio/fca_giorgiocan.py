@@ -17,15 +17,10 @@ def create_steering_control(packer, bus, apply_steer, lkas_enabled):
 
 
 def create_lka_hud_2_control(packer, bus, apply_steer, lkas_enabled):
-  if apply_steer > 0:
-    temp = 10
-  elif apply_steer < 0:
-    temp = 8
-  else
-    temp = 6
-  
   values = {
-    "LKA_ACTIVE": temp,
+    "LKA_ACTIVE": 6 if apply_steer == 0,
+    "LKA_ACTIVE": 10 if apply_steer > 0,
+    "LKA_ACTIVE": 8 if apply_steer < 0,
     "NEW_SIGNAL_1": 1,
   }
 
