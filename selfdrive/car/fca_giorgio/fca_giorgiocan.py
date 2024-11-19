@@ -12,7 +12,7 @@ def crc8(data):
         crc = (crc << 1) & 0xFF
   return crc ^ 0xFF
 
-def create_steering_control(packer, bus, apply_steer, lkas_enabled):
+def create_steering_control(packer, bus, apply_steer, lkas_enabled, frame):
   values = {
     "LKA_TORQUE": apply_steer,
     "LKA_ENABLED": 0,
