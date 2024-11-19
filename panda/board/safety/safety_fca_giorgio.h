@@ -68,6 +68,7 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
   }
 
   return (uint8_t)(crc ^ final_xor);
+}
 
 static safety_config fca_giorgio_init(uint16_t param) {
   UNUSED(param);
