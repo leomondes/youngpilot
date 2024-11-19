@@ -18,7 +18,7 @@ def create_steering_control(packer, bus, apply_steer, lkas_enabled, frame):
     "LKA_TORQUE": apply_steer,
     "LKA_ENABLED": lkas_enabled,
     "COUNTER": 15, #frame % 0x10,
-    "CHECKSUM": 0xFF, #crc8(combined_bits),
+    "CHKSUM": 0xFF, #crc8(combined_bits),
   }
 
   return packer.make_can_msg("LKA_COMMAND", bus, values)
