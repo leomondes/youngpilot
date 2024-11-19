@@ -1,6 +1,6 @@
 def crc8(data):
-  crc = 0xFF
-  poly = 0x1D
+  crc = bytes(0xFF)
+  poly = bytes(0x1D)
 
   for byte in data:
     crc ^= byte
