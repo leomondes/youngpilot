@@ -1,8 +1,9 @@
 def crc8(data):
-  crc = bytes(0xFF)
-  poly = bytes(0x1D)
+  crc = 0xFF
+  poly = 0x1D
+  datas = int.from_bytes(data, byteorder='big')
 
-  for byte in data:
+  for byte in datas:
     crc ^= byte
 
     for _ in range(8):
