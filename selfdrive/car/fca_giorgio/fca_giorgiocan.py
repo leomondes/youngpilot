@@ -15,7 +15,7 @@ def crc8(data):
 def create_steering_control(packer, bus, apply_steer, lkas_enabled, frame):
   values = {
     "LKA_TORQUE": apply_steer,
-    "LKA_ENABLED": 0,
+    "LKA_ENABLED": lkas_enabled,
     #"COUNTER": frame % 0x10,
     #"CHECKSUM": crc8([apply_steer.to_bytes(2), int(0x1).to_bytes(2), frame % 0x10])
   }
@@ -33,7 +33,7 @@ def create_steering_control(packer, bus, apply_steer, lkas_enabled, frame):
 def create_lka_hud_2_control(packer, bus, apply_steer, lkas_enabled):
   values = {
     "LKA_ACTIVE": 10 if apply_steer > 0 else 8 if apply_steer < 0 else 6,
-    "NEW_SIGNAL_1": 1,
+    "NEW_SIGNAL_1": lkas_enabled,
   }
 
   return packer.make_can_msg("LKA_HUD_2", bus, values)
