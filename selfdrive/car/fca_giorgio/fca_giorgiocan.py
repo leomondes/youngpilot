@@ -3,7 +3,7 @@ def crc8(data):
   poly = 0x1D
 
   for byte in data:
-    crc = crc ^ byte
+    crc ^= byte
 
     for _ in range(8):
       if crc & 0x80:
@@ -17,7 +17,7 @@ def create_steering_control(packer, bus, apply_steer, lkas_enabled, frame):
     "LKA_TORQUE": apply_steer,
     "LKA_ENABLED": 0,
     "COUNTER": frame % 0x10,
-    "CHECKSUM": crc8([int(0x1).apply_steer.to_bytes(2), frame % 0x10])
+    #"CHECKSUM": crc8([apply_steer.to_bytes(2), int(0x1).to_bytes(2), frame % 0x10])
   }
 
   return packer.make_can_msg("LKA_COMMAND", bus, values)
