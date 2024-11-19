@@ -29,7 +29,7 @@ class CarController(CarControllerBase):
         apply_steer = 0
 
       self.apply_steer_last = apply_steer
-      can_sends.append(fca_giorgiocan.create_steering_control(self.packer_pt, CANBUS.pt, apply_steer, CC.latActive))
+      can_sends.append(fca_giorgiocan.create_steering_control(self.packer_pt, CANBUS.pt, apply_steer, CC.latActive, self.frame))
 
     # **** HUD Controls ***************************************************** #
 
