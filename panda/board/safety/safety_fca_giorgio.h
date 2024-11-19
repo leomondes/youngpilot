@@ -35,6 +35,7 @@ RxCheck fca_giorgio_rx_checks[] = {
   {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   //{.msg = {{FCA_GIORGIO_EPS_3, 0, 4, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   //{.msg = {{FCA_GIORGIO_EPS_2, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_LKA_COMMAND, 2, 4, .check_checksum = true, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
 };
 
 //uint8_t fca_giorgio_crc8_lut_j1850[256];  // Static lookup table for CRC8 SAE J1850
@@ -49,7 +50,7 @@ static uint8_t fca_giorgio_get_counter(const CANPacket_t *to_push) {
   return (uint8_t)(GET_BYTE(to_push, counter_byte) & 0xFU);
 }
 
-static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
+//static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
 //  int addr = GET_ADDR(to_push);
 //  int len = GET_LEN(to_push);
 //
@@ -69,6 +70,7 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
 
 //  return (uint8_t)(crc ^ final_xor);
 
+static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
   uint8_t checksum = 0xFFU;
   int len = GET_LEN(to_push);
   for (int j = 0; j < (len - 1); j++) {
