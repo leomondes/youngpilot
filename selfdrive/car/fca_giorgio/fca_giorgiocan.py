@@ -1,9 +1,9 @@
 def crc8(data):
   crc = bytes(0xFF)
-  poly = 0x1D
+  poly = bytes(0x1D)
 
   for byte in data:
-    crc ^= byte
+    crc = crc ^ byte
 
     for _ in range(8):
       if crc & 0x80:
