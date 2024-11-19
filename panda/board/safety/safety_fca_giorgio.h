@@ -49,57 +49,25 @@ static uint8_t fca_giorgio_get_counter(const CANPacket_t *to_push) {
   return (uint8_t)(GET_BYTE(to_push, counter_byte) & 0xFU);
 }
 
-//static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
-//  int addr = GET_ADDR(to_push);
-//  int len = GET_LEN(to_push);
-//
-  // CRC is in the last byte, poly is same as SAE J1850 but uses a different init value and output XOR
-//  uint8_t crc = 0U;
-//  uint8_t final_xor = 0U;
+static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
+  int addr = GET_ADDR(to_push);
+  int len = GET_LEN(to_push);
 
-//  for (int i = 0; i < len - 1; i++) {
-//    crc ^= (uint8_t)GET_BYTE(to_push, i);
-//    crc = fca_giorgio_crc8_lut_j1850[crc];
-//  }
+  // CRC is in the last byte, poly is same as SAE J1850 but uses a different init value and output XOR
+  uint8_t crc = 0U;
+  uint8_t final_xor = 0U;
+
+  for (int i = 0; i < len - 1; i++) {
+    crc ^= (uint8_t)GET_BYTE(to_push, i);
+    crc = fca_giorgio_crc8_lut_j1850[crc];
+  }
 
   // TODO: bruteforce final XORs for Panda relevant messages
-//  if (addr == 0xFFU) {
-//    final_xor = 0xFFU;
-//  }
-
-//  return (uint8_t)(crc ^ final_xor);
-
-static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
-  uint8_t checksum = 0xFFU;
-  int len = GET_LEN(to_push);
-  for (int j = 0; j < (len - 1); j++) {
-    uint8_t shift = 0x80U;
-    uint8_t curr = (uint8_t)GET_BYTE(to_push, j);
-    for (int i=0; i<8; i++) {
-      uint8_t bit_sum = curr & shift;
-      uint8_t temp_chk = checksum & 0x80U;
-      if (bit_sum != 0U) {
-        bit_sum = 0x1C;
-        if (temp_chk != 0U) {
-          bit_sum = 1;
-        }
-        checksum = checksum << 1;
-        temp_chk = checksum | 1U;
-        bit_sum ^= temp_chk;
-      } else {
-        if (temp_chk != 0U) {
-          bit_sum = 0x1D;
-        }
-        checksum = checksum << 1;
-        bit_sum ^= checksum;
-      }
-      checksum = bit_sum;
-      shift = shift >> 1;
-    }
+  if (addr == 0xFFU) {
+    final_xor = 0xFFU;
   }
-  return (uint8_t)(~checksum);
 
-}
+  return (uint8_t)(crc ^ final_xor);
 
 static safety_config fca_giorgio_init(uint16_t param) {
   UNUSED(param);
