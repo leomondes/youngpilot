@@ -37,7 +37,7 @@ RxCheck fca_giorgio_rx_checks[] = {
   //{.msg = {{FCA_GIORGIO_EPS_2, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
 };
 
-//uint8_t fca_giorgio_crc8_lut_j1850[256];  // Static lookup table for CRC8 SAE J1850
+uint8_t fca_giorgio_crc8_lut_j1850[256];  // Static lookup table for CRC8 SAE J1850
 
 static uint32_t fca_giorgio_get_checksum(const CANPacket_t *to_push) {
   int checksum_byte = GET_LEN(to_push) - 1U;
@@ -72,7 +72,7 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
 static safety_config fca_giorgio_init(uint16_t param) {
   UNUSED(param);
 
-  //gen_crc_lookup_table_8(0x2F, fca_giorgio_crc8_lut_j1850);
+  gen_crc_lookup_table_8(0x2F, fca_giorgio_crc8_lut_j1850);
   return BUILD_SAFETY_CFG(fca_giorgio_rx_checks, FCA_GIORGIO_TX_MSGS);
 }
 
