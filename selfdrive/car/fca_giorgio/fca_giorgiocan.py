@@ -1,10 +1,10 @@
 def crc8(combined_bits):
-  crc = bytes(0xFF)
-  poly = bytes(0x1D)
+  crc = 0xFF
+  poly = 0x1D
   data = combined_bits.to_bytes(3, byteorder='big')
   
   for byte in data:
-    crc ^= byte
+    crc = crc ^ byte
     for _ in range(8):
       if crc & 0x80:
         crc = ((crc << 1) ^ poly) & 0xFF
