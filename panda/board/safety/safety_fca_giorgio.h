@@ -23,7 +23,7 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
 #define FCA_GIORGIO_EPS_2           0x106
 
 // TODO: need to find a button message for cancel spam
-const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 4}, {FCA_GIORGIO_LKA_HUD_2, 0, 8}};
+const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 8}, {FCA_GIORGIO_LKA_HUD_2, 0, 8}};
 
 // TODO: need to find a message for driver gas
 // TODO: re-check counter/checksum for ABS_3
@@ -35,7 +35,6 @@ RxCheck fca_giorgio_rx_checks[] = {
   {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   //{.msg = {{FCA_GIORGIO_EPS_3, 0, 4, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   //{.msg = {{FCA_GIORGIO_EPS_2, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_LKA_COMMAND, 2, 4, .check_checksum = true, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
 };
 
 //uint8_t fca_giorgio_crc8_lut_j1850[256];  // Static lookup table for CRC8 SAE J1850

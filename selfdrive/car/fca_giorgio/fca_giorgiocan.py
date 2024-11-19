@@ -11,11 +11,6 @@ def crc8(combined_bits):
       else:
         crc = (crc << 1) & 0xFF
   return crc ^ 0xFF
-
-#def get_hex_values(apply_steer, lkas_enabled, frame):
-#    combined_bits = (apply_steer << 13) | (lkas_enabled << 12) | (0 << 4) | frame
-#    hex_values = combined_bits.to_bytes(3, byteorder='big')
-#    return [f"{byte:02X}" for byte in hex_values]
     
 def create_steering_control(packer, bus, apply_steer, lkas_enabled, frame):
   combined_bits = (apply_steer << 13) | (lkas_enabled << 12) | (0 << 4) | frame
@@ -23,7 +18,7 @@ def create_steering_control(packer, bus, apply_steer, lkas_enabled, frame):
     "LKA_TORQUE": apply_steer,
     "LKA_ENABLED": lkas_enabled,
     "COUNTER": frame % 0x10,
-    "CHECKSUM": crc8(combined_bits)
+    "CHECKSUM": crc8(combined_bits),
     #"CHECKSUM": crc8([apply_steer.to_bytes(2), int(0x1).to_bytes(2), frame % 0x10])
   }
 
