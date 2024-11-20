@@ -55,10 +55,9 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
 
   // CRC is in the last byte, poly is same as SAE J1850 but uses a different init value and output XOR
   // For LKA Command (0x1F6) uses standard SAE J8150
+  uint8_t crc = 0U;
   if (addr == 0x1F6) {
-    uint8_t crc = 0xFF;  
-  } else {
-    uint8_t crc = 0U; 
+    crc = 0xFF;  
   }
   uint8_t final_xor = 0U;
 
