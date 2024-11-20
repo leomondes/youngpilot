@@ -54,20 +54,20 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
   int len = GET_LEN(to_push);
 
   // CRC is in the last byte, poly is same as SAE J1850 but uses a different init value and output XOR
-  uint8_t crc = 0U;
-  uint8_t final_xor = 0U;
+  uint8_t crc = 0xFF;
+  uint8_t final_xor = 0xFF;
 
   for (int i = 0; i < len - 1; i++) {
     crc ^= (uint8_t)GET_BYTE(to_push, i);
-    crc = fca_giorgio_crc8_lut_j1850[crc];
+    crc = crc8_lut_j1850[crc];
   }
 
   // TODO: bruteforce final XORs for Panda relevant messages
-  if (addr == 0xFFU) {
-    final_xor = 0xFFU;
-  }
+  //if (addr == 0xFFU) {
+  //  final_xor = 0xFFU;
+  //}
 
-  return (uint8_t)(crc ^ final_xor);
+  return (uint8_t)(crc ^ 0xFF);
 }
 
 static safety_config fca_giorgio_init(uint16_t param) {
