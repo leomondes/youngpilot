@@ -14,9 +14,7 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
 #define FCA_GIORGIO_ABS_3           0xFA
 //#define FCA_GIORGIO_EPS_3           0x122
 #define FCA_GIORGIO_LKA_COMMAND     0x1F6
-//#define FCA_GIORGIO_LKA_HUD_1       0x4AE
 #define FCA_GIORGIO_LKA_HUD_2       0x547
-//#define FCA_GIORGIO_ACC_1           0x5A2
 #define FCA_GIORGIO_ACC_2           0x1F2
 #define FCA_GIORGIO_ACC_3           0x2FA
 #define FCA_GIORGIO_ACC_4           0x73C
@@ -29,7 +27,6 @@ const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 4}, {FCA_GIOR
 // TODO: re-check counter/checksum for ABS_3
 // TODO: reenable checksums/counters on ABS_1 and EPS_3 once checksums are bruteforced
 RxCheck fca_giorgio_rx_checks[] = {
-  //{.msg = {{FCA_GIORGIO_ACC_1, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 12U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ACC_2, 1, 8, .check_checksum = false, .max_counter = 0U, .frequency = 50U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ABS_1, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
@@ -109,21 +106,6 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
     //if (addr == FCA_GIORGIO_EPS_2) {
     //  int torque_driver_new = ((GET_BYTE(to_push, 3) >> 5) | (GET_BYTE(to_push, 2) << 3)) - 1024U;
     //  update_sample(&torque_driver, torque_driver_new);
-    //}
-
-    //if (addr == FCA_GIORGIO_ACC_1) {
-      // When using stock ACC, enter controls on rising edge of stock ACC engage, exit on disengage
-      // Always exit controls on main switch off
-      // Signal: ACC_1.CRUISE_STATUS
-    //  int acc_status = (GET_BYTE(to_push, 2) & 0x60U) >> 5;
-    //  bool cruise_engaged = (acc_status == 2) || (acc_status == 3);
-    //  acc_main_on = cruise_engaged || (acc_status == 1);
-
-    //  pcm_cruise_check(cruise_engaged);
-
-    //  if (!acc_main_on) {
-    //    controls_allowed = false;
-    //  }
     //}
 
     if (addr == FCA_GIORGIO_ACC_2) {
