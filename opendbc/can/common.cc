@@ -270,6 +270,6 @@ unsigned int fca_giorgio_checksum(uint32_t address, const Signal &sig, const std
   //  return crc ^ 0xA;
   //}
 
-  return crc ^ 0xFF;
+  return crc ^ 0xFF
 
 }
