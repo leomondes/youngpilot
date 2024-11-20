@@ -251,9 +251,10 @@ unsigned int hkg_can_fd_checksum(uint32_t address, const Signal &sig, const std:
   return crc;
 }
 
-unsigned int xfca_giorgio_checksum(uint32_t address, const Signal &sig, const std::vector<uint8_t> &d) {
+unsigned int fca_giorgio_checksum(uint32_t address, const Signal &sig, const std::vector<uint8_t> &d) {
   // CRC is in the last byte, poly is same as SAE J1850 but uses a different init value and output XOR
   uint8_t crc = 0xFF;
+  uint8_t poly = 0x1D;
 
   for (int i = 0; i < d.size() - 1; i++) {
     crc = crc ^ d[i];
@@ -272,34 +273,4 @@ unsigned int xfca_giorgio_checksum(uint32_t address, const Signal &sig, const st
 
   return crc ^ 0xFF;
 
-}
-
-unsigned int fca_giorgio_checksum(uint32_t address, const Signal &sig, const std::vector<uint8_t> &d) {
-  uint8_t checksum = 0xFF;
-  for (int j = 0; j < (d.size() - 1); j++) {
-    uint8_t shift = 0x80;
-    uint8_t curr = d[j];
-    for (int i = 0; i < 8; i++) {
-      uint8_t bit_sum = curr & shift;
-      uint8_t temp_chk = checksum & 0x80U;
-      if (bit_sum != 0U) {
-        bit_sum = 0x1C;
-        if (temp_chk != 0U) {
-          bit_sum = 1;
-        }
-        checksum = checksum << 1;
-        temp_chk = checksum | 1U;
-        bit_sum ^= temp_chk;
-      } else {
-        if (temp_chk != 0U) {
-          bit_sum = 0x1D;
-        }
-        checksum = checksum << 1;
-        bit_sum ^= checksum;
-      }
-      checksum = bit_sum;
-      shift = shift >> 1;
-    }
-  }
-  return ~checksum & 0xFF;
 }
