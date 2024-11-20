@@ -37,7 +37,7 @@ RxCheck fca_giorgio_rx_checks[] = {
   //{.msg = {{FCA_GIORGIO_EPS_2, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
 };
 
-uint8_t fca_giorgio_crc8_lut_j1850[256];  // Static lookup table for CRC8 SAE J1850
+uint8_t crc8_lut_j1850[256];  // Static lookup table for CRC8 SAE J1850
 
 static uint32_t fca_giorgio_get_checksum(const CANPacket_t *to_push) {
   int checksum_byte = GET_LEN(to_push) - 1U;
@@ -55,7 +55,7 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
 
   // CRC is in the last byte, poly is same as SAE J1850 but uses a different init value and output XOR
   uint8_t crc = 0xFF;
-  uint8_t final_xor = 0xFF;
+  //uint8_t final_xor = 0xFF;
 
   for (int i = 0; i < len - 1; i++) {
     crc ^= (uint8_t)GET_BYTE(to_push, i);
