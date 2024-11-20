@@ -301,5 +301,5 @@ unsigned int fca_giorgio_checksum(uint32_t address, const Signal &sig, const std
       shift = shift >> 1;
     }
   }
-  return checksum & 0xFF;
+  return ~checksum & 0xFF;
 }
