@@ -253,8 +253,13 @@ unsigned int hkg_can_fd_checksum(uint32_t address, const Signal &sig, const std:
 
 unsigned int fca_giorgio_checksum(uint32_t address, const Signal &sig, const std::vector<uint8_t> &d) {
   // CRC is in the last byte, poly is same as SAE J1850 but uses a different init value and output XOR
-  uint8_t crc = 0x00;
-
+  // For LKA Command (0x1F6) uses standard SAE J8150
+  if (address == 0x1F6) {
+    uint8_t crc = 0xFF;  
+  } else {
+    uint8_t crc = 0x00;  
+  }
+  
   for (int i = 0; i < d.size() - 1; i++) {
     crc ^= d[i];
     crc = crc8_lut_j1850[crc];
@@ -266,6 +271,8 @@ unsigned int fca_giorgio_checksum(uint32_t address, const Signal &sig, const std
     return crc ^ 0xF6;
   } else if (address == 0x122) {
     return crc ^ 0xF1;
+  } else if (address == 0x1F6) {
+    return crc ^ 0xFFU;
   } else {
     return crc ^ 0xA;
   }
