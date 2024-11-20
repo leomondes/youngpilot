@@ -1,7 +1,7 @@
-def crc8(data):
+def crc8(combined_bits):
   crc = 0xFF
   poly = 0x1D
-  #data = combined_bits.to_bytes(3, byteorder='big')
+  data = combined_bits.to_bytes(3, byteorder='big')
   
   for byte in data:
     crc = crc ^ byte
