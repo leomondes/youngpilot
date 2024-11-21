@@ -168,11 +168,12 @@ static int fca_giorgio_fwd_hook(int bus_num, int addr) {
       bus_fwd = 2;
       break;
     case 2:
-      if ((addr == FCA_GIORGIO_LKA_COMMAND) || (addr == FCA_GIORGIO_LKA_HUD_2)) {
-        bus_fwd = -1;
-      } else {
-        bus_fwd = 0;
-      }
+      //if ((addr == FCA_GIORGIO_LKA_COMMAND) || (addr == FCA_GIORGIO_LKA_HUD_2)) {
+      //  bus_fwd = -1;
+      //} else {
+      //  bus_fwd = 0;
+      //}
+      bus_fwd = 0;
       break;
     default:
       bus_fwd = -1;
