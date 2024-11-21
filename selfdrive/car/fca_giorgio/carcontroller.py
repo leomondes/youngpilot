@@ -21,22 +21,22 @@ class CarController(CarControllerBase):
 
     # **** Steering Controls ************************************************ #
 
-    if self.frame % self.CCP.STEER_STEP == 0:
-      if CC.latActive:
-        new_steer = int(round(actuators.steer * self.CCP.STEER_MAX))
-        apply_steer = apply_driver_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorque, self.CCP)
-      else:
-        apply_steer = 0
+    #if self.frame % self.CCP.STEER_STEP == 0:
+    #  if CC.latActive:
+    #    new_steer = int(round(actuators.steer * self.CCP.STEER_MAX))
+    #    apply_steer = apply_driver_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorque, self.CCP)
+    #  else:
+    #    apply_steer = 0
 
-      self.apply_steer_last = apply_steer
-      #can_sends.append(fca_giorgiocan.create_steering_control(self.packer_pt, CANBUS.pt, apply_steer, CC.latActive))
+    #  self.apply_steer_last = apply_steer
+    #  can_sends.append(fca_giorgiocan.create_steering_control(self.packer_pt, CANBUS.pt, apply_steer, CC.latActive))
 
     # **** HUD Controls ***************************************************** #
 
     #if self.frame % self.CCP.HUD_1_STEP == 0:
     #  can_sends.append(fca_giorgiocan.create_lka_hud_1_control(self.packer_pt, CANBUS.pt, CC.latActive))
-    if self.frame % self.CCP.HUD_2_STEP == 0:
-      #can_sends.append(fca_giorgiocan.create_lka_hud_2_control(self.packer_pt, CANBUS.pt, apply_steer, CC.latActive))
+    #if self.frame % self.CCP.HUD_2_STEP == 0:
+    #  can_sends.append(fca_giorgiocan.create_lka_hud_2_control(self.packer_pt, CANBUS.pt, apply_steer, CC.latActive))
 
     new_actuators = actuators.as_builder()
     new_actuators.steer = self.apply_steer_last / self.CCP.STEER_MAX
