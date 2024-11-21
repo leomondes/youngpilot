@@ -13,3 +13,4 @@ fi
 export STAGING_ROOT="/data/safe_staging"
 
 export FINGERPRINT="ALFA_ROMEO_STELVIO_1ST_GEN"
+export FINGERPRINT="mock"
