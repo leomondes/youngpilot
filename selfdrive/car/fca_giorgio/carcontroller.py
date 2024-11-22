@@ -19,7 +19,8 @@ class CarController(CarControllerBase):
     actuators = CC.actuators
     can_sends = []
 
-    cruise_state = CS.out.cruiseState.enabled
+    #cruise_state = CS.out.cruiseState.enabled
+    cruise_state = CS.out.cruiseState.available
 
     # **** Steering Controls ************************************************ #
 
