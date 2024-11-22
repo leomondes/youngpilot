@@ -15,13 +15,14 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
 //#define FCA_GIORGIO_EPS_3           0x122
 #define FCA_GIORGIO_LKA_COMMAND     0x1F6
 #define FCA_GIORGIO_LKA_HUD_2       0x547
+#define FCA_GIORGIO_ACC_1           0x5A2
 #define FCA_GIORGIO_ACC_2           0x1F2
 #define FCA_GIORGIO_ACC_3           0x2FA
 #define FCA_GIORGIO_ACC_4           0x73C
 #define FCA_GIORGIO_EPS_2           0x106
 
 // TODO: need to find a button message for cancel spam
-const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 4}, {FCA_GIORGIO_LKA_HUD_2, 0, 8}};
+const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 4}, {FCA_GIORGIO_LKA_HUD_2, 0, 8}, {FCA_GIORGIO_ACC_1, 0, 8}};
 
 // TODO: need to find a message for driver gas
 // TODO: re-check counter/checksum for ABS_3
@@ -168,8 +169,8 @@ static int fca_giorgio_fwd_hook(int bus_num, int addr) {
       bus_fwd = 2;
       break;
     case 2:
-      if ((addr == FCA_GIORGIO_LKA_COMMAND) || (addr == FCA_GIORGIO_LKA_HUD_2)) {
-        bus_fwd = 0; //-1;
+      if ((addr == FCA_GIORGIO_LKA_COMMAND) || (addr == FCA_GIORGIO_LKA_HUD_2) || (addr == FCA_GIORGIO_ACC_1)) {
+        bus_fwd = -1;
       } else {
         bus_fwd = 0;
       }
