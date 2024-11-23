@@ -86,8 +86,8 @@ static safety_config fca_giorgio_init(uint16_t param) {
 }
 
 static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
+  int addr = GET_ADDR(to_push);
   if (GET_BUS(to_push) == 0U) {
-    int addr = GET_ADDR(to_push);
 
     // Update in-motion state by sampling wheel speeds
     if (addr == FCA_GIORGIO_ABS_1) {
@@ -126,8 +126,6 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
   }
 
   if (GET_BUS(to_push) == 1U) {
-    int addr = GET_ADDR(to_push);
-
     if (addr == FCA_GIORGIO_ACC_2) {
       // When using stock ACC, enter controls on rising edge of stock ACC engage, exit on disengage
       // Always exit controls on main switch off
