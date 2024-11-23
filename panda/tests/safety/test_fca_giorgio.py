@@ -67,5 +67,9 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
     values = {"ACCEL_PEDAL_FOOT": gas_pressed}
     return self.packer.make_can_msg_panda("ENGINE_2", 0, values)
 
+  def _button_msg(self, cancel=False, resume=False):
+    values = {"CANCEL": cancel, "RESUME": resume}
+    return self.packer.make_can_msg_panda("ACC_3", 1, values)
+
 if __name__ == "__main__":
   unittest.main()
