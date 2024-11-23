@@ -18,6 +18,7 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
   MAX_TORQUE = 300
   MAX_RT_DELTA = 150
   RT_INTERVAL = 250000
+  MAX_TORQUE_ERROR = 80
 
   DRIVER_TORQUE_ALLOWANCE = 80
   DRIVER_TORQUE_FACTOR = 3

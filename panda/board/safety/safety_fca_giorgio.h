@@ -8,6 +8,7 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
   .driver_torque_allowance = 80,
   .driver_torque_factor = 3,
   .type = TorqueDriverLimited,
+  .max_torque_error = 80
 };
 
 #define FCA_GIORGIO_ABS_1           0xEE
