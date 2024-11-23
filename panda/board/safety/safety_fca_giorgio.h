@@ -1,6 +1,6 @@
 // lateral limits
 const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
-  .max_steer = 500,
+  .max_steer = 300,
   .max_rt_delta = 150,
   .max_rt_interval = 250000,
   .max_rate_up = 4,
@@ -104,10 +104,10 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
     //  update_sample(&torque_driver, torque_driver_new);
     //}
   
-    //if (addr == FCA_GIORGIO_EPS_2) {
-    //  int torque_driver_new = ((GET_BYTE(to_push, 3) >> 5) | (GET_BYTE(to_push, 2) << 3)) - 1024U;
-    //  update_sample(&torque_driver, torque_driver_new);
-    //}
+    if (addr == FCA_GIORGIO_EPS_2) {
+      int torque_driver_new = ((GET_BYTE(to_push, 3) >> 5) | (GET_BYTE(to_push, 2) << 3)) - 1024U;
+      update_sample(&torque_driver, torque_driver_new);
+    }
 
     if (addr == FCA_GIORGIO_ACC_2) {
       // When using stock ACC, enter controls on rising edge of stock ACC engage, exit on disengage
@@ -150,8 +150,6 @@ static bool fca_giorgio_tx_hook(const CANPacket_t *to_send) {
     if (steer_torque_cmd_checks(desired_torque, steer_req, FCA_GIORGIO_STEERING_LIMITS)) {
       tx = false;
     }
-  
-  tx = true;
 
   }
 
