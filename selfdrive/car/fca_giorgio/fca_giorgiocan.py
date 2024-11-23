@@ -8,7 +8,8 @@ def create_steering_control(packer, bus, apply_steer, cruise_state):
 
 def create_lka_hud_2_control(packer, bus, apply_steer, cruise_state):
   values = {
-    "LKA_ACTIVE": 6 if cruise_state else 1,
+    #"LKA_ACTIVE": 6 if cruise_state else 1,
+    "LKA_ACTIVE": 8 if apply_steer < 1 else 10 if apply_steer > 0 else 6 if cruise_state else 1,
     "NEW_SIGNAL_1": 1,
   }
 
