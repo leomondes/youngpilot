@@ -63,6 +63,16 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
       #self.assertTrue(self._rx(self._user_gas_msg(0)), f"{count=}")
       self.assertTrue(self._rx(self._pcm_status_msg(False)), f"{count=}")
 
+  def _powertrain_data_msg(self, gas_pressed=None):
+    # preserve the state
+    if gas_pressed is None:
+      gas_pressed = self.safety.get_gas_pressed_prev()
+
+    values = {
+      "ACCEL_PEDAL_FOOT": gas_pressed,
+    }
+    self.__class__.cnt_powertrain_data += 1
+    return self.packer.make_can_msg_panda("ENGINE_2", self.PT_BUS, values)
 
 if __name__ == "__main__":
   unittest.main()
