@@ -32,8 +32,8 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
   #  pass
 
   def _pcm_status_msg(self, enable):
-    values = {"CRUISE_STATUS": 2 if enable else 1}
-    return self.packer.make_can_msg_panda("ACC_1", 0, values)
+    values = {"ACC_ACTIV": 2 if enable else 1}
+    return self.packer.make_can_msg_panda("ACC_2", 1, values)
 
   def _speed_msg(self, speed):
     values = {"WHEEL_SPEED_%s" % s: speed for s in ["FL", "FR", "RL", "RR"]}
@@ -48,10 +48,10 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
 
   def _torque_meas_msg(self, torque):
     values = {"EPS_TORQUE": torque}
-    return self.packer.make_can_msg_panda("EPS_3", 0, values)
+    return self.packer.make_can_msg_panda("EPS_2", 0, values)
 
   def _torque_cmd_msg(self, torque, steer_req=1):
-    values = {"LKA_TORQUE": torque, "LKA_ACTIVE": steer_req}
+    values = {"LKA_TORQUE": torque, "LKA_ENABLED": steer_req}
     return self.packer.make_can_msg_panda("LKA_COMMAND", 0, values)
 
   def test_rx_hook(self):
