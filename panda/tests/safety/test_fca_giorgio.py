@@ -52,7 +52,7 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
     return self.packer.make_can_msg_panda("EPS_2", 0, values)
 
   def _torque_cmd_msg(self, torque, steer_req=1):
-    values = {"LKA_TORQUE": torque, "LKA_ENABLED": steer_req}
+    values = {"LKA_TORQUE": desired_torque, "LKA_ENABLED": steer_req}
     return self.packer.make_can_msg_panda("LKA_COMMAND", 0, values)
 
   def test_rx_hook(self):

@@ -146,9 +146,6 @@ static bool fca_giorgio_tx_hook(const CANPacket_t *to_send) {
   int addr = GET_ADDR(to_send);
   bool tx = true;
 
-  // Safety check for HCA_01 Heading Control Assist torque
-  // Signal: LKA_COMMAND.
-  // Signal: HCA_01.HCA_01_LM_OffSign (direction)
   if (addr == FCA_GIORGIO_LKA_COMMAND) {
     int desired_torque = ((GET_BYTE(to_send, 1) >> 5) | (GET_BYTE(to_send, 0) << 3)) - 1024U;
     bool steer_req = GET_BIT(to_send, 12U);
