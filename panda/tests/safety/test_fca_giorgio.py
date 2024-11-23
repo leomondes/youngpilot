@@ -33,7 +33,7 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
   #  pass
 
   def _pcm_status_msg(self, enable):
-    values = {"ACC_ACTIVE": 2 if enable else 1}
+    values = {"ACC_ACTIVE": 1 if enable else 0}
     return self.packer.make_can_msg_panda("ACC_2", 1, values)
 
   def _speed_msg(self, speed):
@@ -66,6 +66,15 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
   def _user_gas_msg(self, gas_pressed=None):
     values = {"ACCEL_PEDAL_FOOT": gas_pressed}
     return self.packer.make_can_msg_panda("ENGINE_2", 0, values)
+
+  def test_disable_control_allowed_from_cruise(self):
+    pass
+
+  def test_enable_control_allowed_from_cruise(self):
+    pass
+
+  def test_cruise_engaged_prev(self):
+    pass
 
 if __name__ == "__main__":
   unittest.main()

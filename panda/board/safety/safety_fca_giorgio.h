@@ -33,7 +33,6 @@ RxCheck fca_giorgio_rx_checks[] = {
   {.msg = {{FCA_GIORGIO_ACC_2, 1, 8, .check_checksum = false, .max_counter = 0U, .frequency = 50U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ABS_1, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
-  //{.msg = {{FCA_GIORGIO_EPS_3, 0, 4, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_EPS_2, 0, 7, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ENGINE_2, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
 };
