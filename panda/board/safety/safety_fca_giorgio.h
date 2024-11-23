@@ -100,13 +100,6 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
       vehicle_moving = (wheel_speed_fl + wheel_speed_fr + wheel_speed_rl + wheel_speed_rr) > 0;
     }
 
-    // Update driver input torque samples
-    // Signal: EPS_3.EPS_TORQUE
-    //if (addr == FCA_GIORGIO_EPS_3) {
-    //  int torque_driver_new = ((GET_BYTE(to_push, 1) >> 4) | (GET_BYTE(to_push, 0) << 4)) - 2048U;
-    //  update_sample(&torque_driver, torque_driver_new);
-    //}
-  
     if (addr == FCA_GIORGIO_EPS_2) {
       int torque_driver_new = ((GET_BYTE(to_push, 3) >> 5) | (GET_BYTE(to_push, 2) << 3)) - 1024U;
       update_sample(&torque_driver, torque_driver_new);
@@ -114,7 +107,6 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
 
     // TODO: find cruise button message
 
-    // TODO: find a driver gas message
     if (addr == FCA_GIORGIO_ENGINE_2) {
       gas_pressed = ((GET_BYTE(to_push, 1) >> 5) | (GET_BYTE(to_push, 0) & 0x1FU << 3)) != 0U;
     }
