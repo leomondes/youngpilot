@@ -143,19 +143,22 @@ static bool fca_giorgio_tx_hook(const CANPacket_t *to_send) {
   // Safety check for HCA_01 Heading Control Assist torque
   // Signal: LKA_COMMAND.
   // Signal: HCA_01.HCA_01_LM_OffSign (direction)
-  //if (addr == FCA_GIORGIO_LKA_COMMAND) {
-  //  int desired_torque = ((GET_BYTE(to_send, 1) >> 5) | (GET_BYTE(to_send, 0) << 3)) - 1024U;
-  //  bool steer_req = GET_BIT(to_send, 12U);
+  if (addr == FCA_GIORGIO_LKA_COMMAND) {
+    int desired_torque = ((GET_BYTE(to_send, 1) >> 5) | (GET_BYTE(to_send, 0) << 3)) - 1024U;
+    bool steer_req = GET_BIT(to_send, 12U);
 
-  //  if (steer_torque_cmd_checks(desired_torque, steer_req, FCA_GIORGIO_STEERING_LIMITS)) {
-  //    tx = false;
-  //  }
-  //}
+    if (steer_torque_cmd_checks(desired_torque, steer_req, FCA_GIORGIO_STEERING_LIMITS)) {
+      tx = false;
+    }
+  
+  tx = true
+
+  }
 
   // TODO: sanity check cancel spam, once a button message is found
 
   // FIXME: don't actually run any checks during early testing
-  //tx = true;
+  tx = true;
 
   return tx;
 }
