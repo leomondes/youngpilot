@@ -8,8 +8,8 @@ def create_steering_control(packer, bus, apply_steer, cruise_state):
 
 def create_lka_hud_2_control(packer, bus, apply_steer, cruise_state):
   values = {
-    "LKA_ACTIVE": 6 if cruise_state else 1,
-    #"LKA_ACTIVE": 8 if apply_steer < 1 else 10 if apply_steer > 0 else 6 if cruise_state else 1,
+    #"LKA_ACTIVE": 6 if cruise_state else 1,
+    "LKA_ACTIVE": 8 if apply_steer < 10 else 10 if apply_steer > 10 else 6 if cruise_state else 1,
     "NEW_SIGNAL_1": 1,
   }
 
@@ -24,5 +24,5 @@ def create_acc_1_control(packer, bus, apply_steer, cruise_state):
 
 # LKA_ACTIVE
 # 6 (0110) = green car with both white lines
-# 10 (1010) or 12 (1100) yellow on left, positive torque to turn right
-# 8 (1000) or 11 (1011) yellow on right, negative torque to turn left
+# 10 (1010) or 12 (1100) yellow on right, positive torque to turn right
+# 8 (1000) or 11 (1011) yellow on left, negative torque to turn left
