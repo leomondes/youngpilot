@@ -122,7 +122,7 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
     generic_rx_checks((addr == FCA_GIORGIO_LKA_COMMAND));
   }
 
-if (GET_BUS(to_push) == 1U) {
+  if (GET_BUS(to_push) == 1U) {
     int addr = GET_ADDR(to_push);
 
     if (addr == FCA_GIORGIO_ACC_2) {
@@ -138,6 +138,7 @@ if (GET_BUS(to_push) == 1U) {
         controls_allowed = false;
       }
     }
+  }
 
 }
 
