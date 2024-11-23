@@ -118,8 +118,6 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
     if (addr == FCA_GIORGIO_ABS_3) {
       brake_pressed = GET_BIT(to_push, 3);
     }
-
-    generic_rx_checks((addr == FCA_GIORGIO_LKA_COMMAND));
   }
 
   if (GET_BUS(to_push) == 1U) {
@@ -139,7 +137,7 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
       }
     }
   }
-
+  generic_rx_checks((addr == FCA_GIORGIO_LKA_COMMAND));
 }
 
 static bool fca_giorgio_tx_hook(const CANPacket_t *to_send) {
@@ -159,7 +157,7 @@ static bool fca_giorgio_tx_hook(const CANPacket_t *to_send) {
   // TODO: sanity check cancel spam, once a button message is found
 
   // FIXME: don't actually run any checks during early testing
-  tx = true;
+  //tx = true;
 
   return tx;
 }
