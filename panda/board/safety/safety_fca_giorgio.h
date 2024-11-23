@@ -122,23 +122,23 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
     generic_rx_checks((addr == FCA_GIORGIO_LKA_COMMAND));
   }
 
-  //if (GET_BUS(to_push) == 1U) {
-  //  int addr = GET_ADDR(to_push);
+  if (GET_BUS(to_push) == 1U) {
+    int addr = GET_ADDR(to_push);
 
-  //  if (addr == FCA_GIORGIO_ACC_2) {
-  //    // When using stock ACC, enter controls on rising edge of stock ACC engage, exit on disengage
-  //    // Always exit controls on main switch off
-  //    int acc_status = (GET_BYTE(to_push, 4) & 0x0FU);
-  //    bool cruise_engaged = (acc_status == 6) || (acc_status == 7) || (acc_status == 8);
-  //    acc_main_on = cruise_engaged;
+    if (addr == FCA_GIORGIO_ACC_2) {
+      // When using stock ACC, enter controls on rising edge of stock ACC engage, exit on disengage
+      // Always exit controls on main switch off
+      int acc_status = (GET_BYTE(to_push, 4) & 0x0FU);
+      bool cruise_engaged = (acc_status == 6) || (acc_status == 7) || (acc_status == 8);
+      acc_main_on = cruise_engaged;
 
-  //    pcm_cruise_check(cruise_engaged);
+      pcm_cruise_check(cruise_engaged);
 
-  //    if (!acc_main_on) {
-  //      controls_allowed = false;
-  //    }
-  //  }
-  //}
+      if (!acc_main_on) {
+        controls_allowed = false;
+      }
+    }
+  }
 
 }
 
