@@ -162,7 +162,7 @@ static bool fca_giorgio_tx_hook(const CANPacket_t *to_send) {
   // TODO: sanity check cancel spam, once a button message is found
 
   // FIXME: don't actually run any checks during early testing
-  tx = true;
+  //tx = true;
 
   return tx;
 }
