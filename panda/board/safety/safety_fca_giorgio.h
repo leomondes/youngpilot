@@ -32,7 +32,7 @@ RxCheck fca_giorgio_rx_checks[] = {
   {.msg = {{FCA_GIORGIO_ABS_1, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   //{.msg = {{FCA_GIORGIO_EPS_3, 0, 4, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
-  //{.msg = {{FCA_GIORGIO_EPS_2, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_EPS_2, 0, 7, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
 };
 
 uint8_t fca_giorgio_crc8_lut_j1850[256];  // Static lookup table for CRC8 SAE J1850
@@ -104,15 +104,14 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
     //  update_sample(&torque_driver, torque_driver_new);
     //}
   
-    //if (addr == FCA_GIORGIO_EPS_2) {
-    //  int torque_driver_new = ((GET_BYTE(to_push, 3) >> 5) | (GET_BYTE(to_push, 2) << 3)) - 1024U;
-    //  update_sample(&torque_driver, torque_driver_new);
-    //}
+    if (addr == FCA_GIORGIO_EPS_2) {
+      int torque_driver_new = ((GET_BYTE(to_push, 3) >> 5) | (GET_BYTE(to_push, 2) << 3)) - 1024U;
+      update_sample(&torque_driver, torque_driver_new);
+    }
 
     if (addr == FCA_GIORGIO_ACC_2) {
       // When using stock ACC, enter controls on rising edge of stock ACC engage, exit on disengage
       // Always exit controls on main switch off
-      // Signal: ACC_1.CRUISE_STATUS
       int acc_status = (GET_BYTE(to_push, 4) & 0x0FU);
       bool cruise_engaged = (acc_status == 6) || (acc_status == 7) || (acc_status == 8);
       acc_main_on = cruise_engaged;
@@ -146,7 +145,7 @@ static bool fca_giorgio_tx_hook(const CANPacket_t *to_send) {
   // Signal: HCA_01.HCA_01_LM_OffSign (direction)
   if (addr == FCA_GIORGIO_LKA_COMMAND) {
     int desired_torque = ((GET_BYTE(to_send, 1) >> 5) | (GET_BYTE(to_send, 0) << 3)) - 1024U;
-    bool steer_req = GET_BIT(to_send, 11U);
+    bool steer_req = GET_BIT(to_send, 12U);
 
     if (steer_torque_cmd_checks(desired_torque, steer_req, FCA_GIORGIO_STEERING_LIMITS)) {
       tx = false;

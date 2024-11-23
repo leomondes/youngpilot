@@ -98,7 +98,7 @@ class CarState(CarStateBase):
       # sig_address, frequency
       ("ACC_2", 50), #from cabana
       ("ACC_3", 100),
-      ("ACC_4", 10), #unable to get from cabana
+      ("ACC_4", 1), #from cabana
     ]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, CANBUS.body)
