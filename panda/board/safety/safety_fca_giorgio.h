@@ -125,7 +125,7 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
     }
   }
 
-  if (GET_BUS(to_push) == 1U) {
+  if (GET_BUS(to_push) == 0U) {
     if (addr == FCA_GIORGIO_ACC_2) {
       // When using stock ACC, enter controls on rising edge of stock ACC engage, exit on disengage
       // Always exit controls on main switch off
