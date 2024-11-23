@@ -109,6 +109,21 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
       update_sample(&torque_driver, torque_driver_new);
     }
 
+    // TODO: find cruise button message
+
+    // TODO: find a driver gas message
+
+    // Signal: ABS_3.BRAKE_PEDAL_SWITCH
+    if (addr == FCA_GIORGIO_ABS_3) {
+      brake_pressed = GET_BIT(to_push, 3);
+    }
+
+    generic_rx_checks((addr == FCA_GIORGIO_LKA_COMMAND));
+  }
+
+if (GET_BUS(to_push) == 1U) {
+    int addr = GET_ADDR(to_push);
+
     if (addr == FCA_GIORGIO_ACC_2) {
       // When using stock ACC, enter controls on rising edge of stock ACC engage, exit on disengage
       // Always exit controls on main switch off
@@ -123,17 +138,6 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
       }
     }
 
-    // TODO: find cruise button message
-
-    // TODO: find a driver gas message
-
-    // Signal: ABS_3.BRAKE_PEDAL_SWITCH
-    if (addr == FCA_GIORGIO_ABS_3) {
-      brake_pressed = GET_BIT(to_push, 3);
-    }
-
-    generic_rx_checks((addr == FCA_GIORGIO_LKA_COMMAND));
-  }
 }
 
 static bool fca_giorgio_tx_hook(const CANPacket_t *to_send) {
