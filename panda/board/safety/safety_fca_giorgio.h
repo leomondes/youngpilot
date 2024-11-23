@@ -151,7 +151,7 @@ static bool fca_giorgio_tx_hook(const CANPacket_t *to_send) {
       tx = false;
     }
   
-  tx = true
+  tx = true;
 
   }
 
