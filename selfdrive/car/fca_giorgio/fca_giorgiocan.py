@@ -9,7 +9,7 @@ def create_steering_control(packer, bus, apply_steer, cruise_state):
 def create_lka_hud_2_control(packer, bus, apply_steer, cruise_state):
   values = {
     "LKA_ACTIVE": 6 if cruise_state else 1,
-    "NEW_SIGNAL_1": 1 if cruise_state else 0,
+    "NEW_SIGNAL_1": 1,
   }
 
   return packer.make_can_msg("LKA_HUD_2", bus, values)
