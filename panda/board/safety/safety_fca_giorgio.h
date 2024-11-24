@@ -7,7 +7,7 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
   .max_rate_up = 4,
   .max_rate_down = 4,
   .driver_torque_allowance = 80,
-  .driver_torque_factor = 3,
+  .driver_torque_factor = 1,
   .type = TorqueDriverLimited,
 };
 

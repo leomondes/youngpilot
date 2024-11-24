@@ -21,7 +21,7 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
   MAX_TORQUE_ERROR = 80
 
   DRIVER_TORQUE_ALLOWANCE = 80
-  DRIVER_TORQUE_FACTOR = 3
+  DRIVER_TORQUE_FACTOR = 1
 
   def setUp(self):
     self.packer = CANPackerPanda("fca_giorgio")
