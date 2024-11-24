@@ -76,5 +76,25 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
   def test_cruise_engaged_prev(self):
     pass
 
+  def test_torque_measurements(self):
+    # TODO: make this test work with all cars
+    self._rx(self._torque_driver_msg(50))
+    self._rx(self._torque_driver_msg(-50))
+    self._rx(self._torque_driver_msg(0))
+    self._rx(self._torque_driver_msg(0))
+    self._rx(self._torque_driver_msg(0))
+    self._rx(self._torque_driver_msg(0))
+
+    self.assertEqual(-50, self.safety.get_torque_driver_min())
+    self.assertEqual(50, self.safety.get_torque_driver_max())
+
+    self._rx(self._torque_driver_msg(0))
+    self.assertEqual(0, self.safety.get_torque_driver_max())
+    self.assertEqual(-50, self.safety.get_torque_driver_min())
+
+    self._rx(self._torque_driver_msg(0))
+    self.assertEqual(0, self.safety.get_torque_driver_max())
+    self.assertEqual(0, self.safety.get_torque_driver_min())
+
 if __name__ == "__main__":
   unittest.main()
