@@ -47,6 +47,10 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
     values = {"BRAKE_PEDAL_SWITCH": 1 if brake else 0}
     return self.packer.make_can_msg_panda("ABS_3", 0, values)
 
+  def _torque_meas_msg(self, torque):
+    values = {"EPS_TORQUE": torque}
+    return self.packer.make_can_msg_panda("EPS_2", 0, values)
+
   def _torque_driver_msg(self, torque):
     values = {"DRIVER_TORQUE": torque}
     return self.packer.make_can_msg_panda("EPS_2", 0, values)
