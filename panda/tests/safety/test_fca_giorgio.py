@@ -67,34 +67,14 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
     values = {"ACCEL_PEDAL_FOOT": gas_pressed}
     return self.packer.make_can_msg_panda("ENGINE_2", 0, values)
 
-  def test_disable_control_allowed_from_cruise(self):
-    pass
+  #def test_disable_control_allowed_from_cruise(self):
+  #  pass
 
-  def test_enable_control_allowed_from_cruise(self):
-    pass
+  #def test_enable_control_allowed_from_cruise(self):
+  #  pass
 
-  def test_cruise_engaged_prev(self):
-    pass
-
-  def test_torque_measurements(self):
-    # TODO: make this test work with all cars
-    self._rx(self._torque_driver(50))
-    self._rx(self._torque_driver(-50))
-    self._rx(self._torque_driver(0))
-    self._rx(self._torque_driver(0))
-    self._rx(self._torque_driver(0))
-    self._rx(self._torque_driver(0))
-
-    self.assertEqual(-50, self.safety.get_torque_driver_min())
-    self.assertEqual(50, self.safety.get_torque_driver_max())
-
-    self._rx(self._torque_driver(0))
-    self.assertEqual(0, self.safety.get_torque_driver_max())
-    self.assertEqual(-50, self.safety.get_torque_driver_min())
-
-    self._rx(self._torque_driver(0))
-    self.assertEqual(0, self.safety.get_torque_driver_max())
-    self.assertEqual(0, self.safety.get_torque_driver_min())
+  #def test_cruise_engaged_prev(self):
+  #  pass
 
 if __name__ == "__main__":
   unittest.main()
