@@ -7,8 +7,8 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
   .max_rate_up = 4,
   .max_rate_down = 4,
   .driver_torque_allowance = 80,
-  .driver_torque_factor = 1,
-  .type = TorqueDriverLimited,
+  .driver_torque_factor = 3,
+  .type = TorqueMotorLimited,
 };
 
 #define FCA_GIORGIO_ABS_1           0xEE
@@ -148,14 +148,15 @@ static bool fca_giorgio_tx_hook(const CANPacket_t *to_send) {
   int addr = GET_ADDR(to_send);
   bool tx = true;
 
+  // STEERING
   if (addr == FCA_GIORGIO_LKA_COMMAND) {
-    int desired_torque = ((GET_BYTE(to_send, 1) >> 5) | (GET_BYTE(to_send, 0) << 3)) - 1024U;
+    int desired_torque = ((GET_BYTE(to_send, 1) >> 5) | (GET_BYTE(to_send, 0) << 3));
+    desired_torque -= 1024;
     bool steer_req = GET_BIT(to_send, 12U);
 
     if (steer_torque_cmd_checks(desired_torque, steer_req, FCA_GIORGIO_STEERING_LIMITS)) {
       tx = false;
     }
-
   }
 
   // TODO: sanity check cancel spam, once a button message is found

@@ -6,20 +6,19 @@ from openpilot.selfdrive.car.fw_query_definitions import FwQueryConfig, Request,
 
 
 class CarControllerParams:
-  STEER_STEP = 1
-  HUD_2_STEP = 25
-  ACC_1_STEP = 100
-
-  STEER_MAX = 300
-  STEER_DRIVER_ALLOWANCE = 80
-  STEER_DRIVER_MULTIPLIER = 3  # weight driver torque heavily
-  STEER_DRIVER_FACTOR = 1  # from dbc
-  STEER_DELTA_UP = 4
-  STEER_DELTA_DOWN = 4
-
   def __init__(self, CP):
-    pass
+   self.STEER_STEP = 1
+   self.HUD_2_STEP = 25
+   self.ACC_1_STEP = 100
 
+   self.STEER_MAX = 300
+   self.STEER_DRIVER_ALLOWANCE = 80
+   self.STEER_DRIVER_MULTIPLIER = 3  # weight driver torque heavily
+   self.STEER_DRIVER_FACTOR = 1  # from dbc
+   self.STEER_DELTA_UP = 4
+   self.STEER_DELTA_DOWN = 4
+
+STEER_THRESHOLD = 120
 
 class CANBUS:
   pt = 0
