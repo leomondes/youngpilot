@@ -137,7 +137,7 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
   // that the relay might be malfunctioning
   bool stock_ecu_detected = false;
   if  ((addr == FCA_GIORGIO_LKA_COMMAND) || (addr == FCA_GIORGIO_LKA_HUD_2) || (addr == FCA_GIORGIO_ACC_1)) {
-    if (bus == 0) {
+    if (GET_BUS(addr) == 0U)
       stock_ecu_detected = true;
     }
   generic_rx_checks(stock_ecu_detected);
