@@ -131,7 +131,7 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
       }
     }
   }
-  generic_rx_checks((addr == FCA_GIORGIO_LKA_COMMAND));
+  generic_rx_checks((addr));
 }
 
 static bool fca_giorgio_tx_hook(const CANPacket_t *to_send) {
