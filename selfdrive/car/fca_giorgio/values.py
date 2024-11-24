@@ -10,6 +10,7 @@ class CarControllerParams:
    self.STEER_STEP = 1
    self.HUD_2_STEP = 25
    self.ACC_1_STEP = 100
+   self.STEER_ERROR_MAX = 80
 
    self.STEER_MAX = 300
    self.STEER_DRIVER_ALLOWANCE = 80

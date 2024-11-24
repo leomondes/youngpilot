@@ -86,53 +86,50 @@ static safety_config fca_giorgio_init(uint16_t param) {
 
 static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
   int addr = GET_ADDR(to_push);
-  if (GET_BUS(to_push) == 0U) {
 
-    // Update in-motion state by sampling wheel speeds
-    if (addr == FCA_GIORGIO_ABS_1) {
-      // Thanks, FCA, for these 13 bit signals. Makes perfect sense. Great work.
-      // Signals: ABS_3.WHEEL_SPEED_[FL,FR,RL,RR]
-      int wheel_speed_fl = (GET_BYTE(to_push, 1) >> 3) | (GET_BYTE(to_push, 0) << 5);
-      int wheel_speed_fr = (GET_BYTE(to_push, 3) >> 6) | (GET_BYTE(to_push, 2) << 2) | ((GET_BYTE(to_push, 1) & 0x7U) << 10);
-      int wheel_speed_rl = (GET_BYTE(to_push, 4) >> 1) | ((GET_BYTE(to_push, 3) & 0x3FU) << 7);
-      int wheel_speed_rr = (GET_BYTE(to_push, 6) >> 4) | (GET_BYTE(to_push, 5) << 4) | ((GET_BYTE(to_push, 4) & 0x1U) << 12);
-      vehicle_moving = (wheel_speed_fl + wheel_speed_fr + wheel_speed_rl + wheel_speed_rr) > 0;
-    }
-
-    if (addr == FCA_GIORGIO_EPS_2) {
-      int torque_driver_new = ((GET_BYTE(to_push, 3) >> 5) | (GET_BYTE(to_push, 2) << 3)) - 1024U;
-      update_sample(&torque_driver, torque_driver_new);
-    }
-
-    // TODO: find cruise button message
-
-    if (addr == FCA_GIORGIO_ENGINE_2) {
-      gas_pressed = ((GET_BYTE(to_push, 1) >> 5) | (GET_BYTE(to_push, 0) & 0x1FU << 3)) != 0U;
-    }
-
-    // Signal: ABS_3.BRAKE_PEDAL_SWITCH
-    if (addr == FCA_GIORGIO_ABS_3) {
-      brake_pressed = GET_BIT(to_push, 3);
-    }
+  // Update in-motion state by sampling wheel speeds
+  if ((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_ABS_1)) {
+    // Thanks, FCA, for these 13 bit signals. Makes perfect sense. Great work.
+    // Signals: ABS_3.WHEEL_SPEED_[FL,FR,RL,RR]
+    int wheel_speed_fl = (GET_BYTE(to_push, 1) >> 3) | (GET_BYTE(to_push, 0) << 5);
+    int wheel_speed_fr = (GET_BYTE(to_push, 3) >> 6) | (GET_BYTE(to_push, 2) << 2) | ((GET_BYTE(to_push, 1) & 0x7U) << 10);
+    int wheel_speed_rl = (GET_BYTE(to_push, 4) >> 1) | ((GET_BYTE(to_push, 3) & 0x3FU) << 7);
+    int wheel_speed_rr = (GET_BYTE(to_push, 6) >> 4) | (GET_BYTE(to_push, 5) << 4) | ((GET_BYTE(to_push, 4) & 0x1U) << 12);
+    vehicle_moving = (wheel_speed_fl + wheel_speed_fr + wheel_speed_rl + wheel_speed_rr) > 0;
   }
 
-  if (GET_BUS(to_push) == 1U) {
-    if (addr == FCA_GIORGIO_ACC_2) {
-      // When using stock ACC, enter controls on rising edge of stock ACC engage, exit on disengage
-      // Always exit controls on main switch off
-      int acc_status = (GET_BYTE(to_push, 4) & 0x0FU);
-      bool cruise_engaged = (acc_status == 6) || (acc_status == 7) || (acc_status == 8);
-      acc_main_on = cruise_engaged;
+  if ((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_EPS_2)) {
+    int torque_meas_new = ((GET_BYTE(to_push, 3) >> 5) | (GET_BYTE(to_push, 2) << 3)) - 1024U;
+    update_sample(&torque_meas, torque_meas_new);
+  }
 
-      pcm_cruise_check(cruise_engaged);
+  // TODO: find cruise button message
 
-      if (!cruise_engaged) {
-        controls_allowed = false;
-      }
+  if ((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_ENGINE_2)) {
+    gas_pressed = ((GET_BYTE(to_push, 1) >> 5) | (GET_BYTE(to_push, 0) & 0x1FU << 3)) != 0U;
+  }
+
+  // Signal: ABS_3.BRAKE_PEDAL_SWITCH
+  if ((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_ABS_3)) {
+    brake_pressed = GET_BIT(to_push, 3);
+  }
+  
+  if ((GET_BUS(to_push) == 1U) && (addr == FCA_GIORGIO_ACC_2)) {
+    // When using stock ACC, enter controls on rising edge of stock ACC engage, exit on disengage
+    // Always exit controls on main switch off
+    int acc_status = (GET_BYTE(to_push, 4) & 0x0FU);
+    bool cruise_engaged = (acc_status == 6) || (acc_status == 7) || (acc_status == 8);
+    acc_main_on = cruise_engaged;
+
+    pcm_cruise_check(cruise_engaged);
+
+    if (!acc_main_on) {
+      controls_allowed = false;
     }
   }
-  //generic_rx_checks((addr == FCA_GIORGIO_LKA_COMMAND));
-
+  generic_rx_checks((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_LKA_COMMAND));
+}
+  
   // If steering controls messages are received on the destination bus, it's an indication
   // that the relay might be malfunctioning
   bool stock_ecu_detected = false;
