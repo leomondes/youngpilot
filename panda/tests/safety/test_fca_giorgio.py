@@ -13,8 +13,8 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
   FWD_BLACKLISTED_ADDRS = {2: [0x1F6,0x547,0x5A2]}
   FWD_BUS_LOOKUP = {0: 2, 2: 0}
 
-  MAX_RATE_UP = 3
-  MAX_RATE_DOWN = 3
+  MAX_RATE_UP = 4
+  MAX_RATE_DOWN = 4
   MAX_TORQUE_ERROR = 80
   MAX_TORQUE = 300
   MAX_RT_DELTA = 150
