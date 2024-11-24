@@ -10,7 +10,7 @@ class CarControllerParams:
   HUD_2_STEP = 25
   ACC_1_STEP = 100
 
-  STEER_MAX = 299
+  STEER_MAX = 300
   STEER_DRIVER_ALLOWANCE = 80
   STEER_DRIVER_MULTIPLIER = 3  # weight driver torque heavily
   STEER_DRIVER_FACTOR = 1  # from dbc
