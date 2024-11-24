@@ -48,7 +48,7 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
     return self.packer.make_can_msg_panda("ABS_3", 0, values)
 
   def _torque_meas_msg(self, torque):
-    values = {"EPS_TORQUE": torque}
+    values = {"DRIVER_TORQUE": torque}
     return self.packer.make_can_msg_panda("EPS_2", 0, values)
 
   def _torque_cmd_msg(self, torque, steer_req=1):
