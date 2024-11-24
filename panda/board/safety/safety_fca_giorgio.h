@@ -1,7 +1,6 @@
 // lateral limits
 const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
   .max_steer = 300,
-  .max_torque = 300,
   .max_torque_error = 80
   .max_rt_delta = 150,
   .max_rt_interval = 250000,
