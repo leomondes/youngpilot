@@ -126,7 +126,7 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
 
       pcm_cruise_check(cruise_engaged);
 
-      if (!acc_main_on) {
+      if (!cruise_engaged) {
         controls_allowed = false;
       }
     }
