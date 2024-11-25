@@ -40,9 +40,9 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
   #  values = {"WHEEL_SPEED_%s" % s: speed for s in ["FL", "FR", "RL", "RR"]}
   #  return self.packer.make_can_msg_panda("ABS_1", 0, values)
 
-  def _speed_msg(self, speed):
-    values = {"VEHICLE_SPEED": speed}
-    return self.packer.make_can_msg_panda("ABS_6", 0, values)
+  #def _speed_msg(self, speed):
+  #  values = {"VEHICLE_SPEED": speed}
+  #  return self.packer.make_can_msg_panda("ABS_6", 0, values)
 
   # Standstill state
   def _vehicle_moving_msg(self, speed: float):
