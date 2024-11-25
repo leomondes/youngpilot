@@ -53,7 +53,6 @@ class CarState(CarStateBase):
     ret.cruiseState.available = bool(cp_body.vl["ACC_4"]["ACC_AVAILABLE"])
     ret.cruiseState.enabled = cp_body.vl["ACC_2"]["ACC_ACTIVE"] in (6, 7, 8)
     ret.cruiseState.speed = cp_body.vl["ACC_4"]["ACC_SPEED"] * CV.KPH_TO_MS
-    ret.vehicle_moving = bool(pt_cp.vl["BCM_2"]["VEHICLE_MOVING"])
 
     ret.leftBlinker = bool(pt_cp.vl["BCM_1"]["LEFT_TURN_STALK"])
     ret.rightBlinker = bool(pt_cp.vl["BCM_1"]["RIGHT_TURN_STALK"])
@@ -77,7 +76,6 @@ class CarState(CarStateBase):
       ("EPS_1", 100),
       ("EPS_2", 100),
       ("BCM_1", 4),  # 4Hz plus triggered updates
-      ("BCM_2", 50),
     ]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, CANBUS.pt)
