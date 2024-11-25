@@ -32,7 +32,6 @@ class CarState(CarStateBase):
     ret.steeringAngleDeg = pt_cp.vl["EPS_1"]["STEERING_ANGLE"]
     ret.steeringRateDeg = pt_cp.vl["EPS_1"]["STEERING_RATE"]
     ret.steeringTorque = pt_cp.vl["EPS_2"]["DRIVER_TORQUE"]
-    #ret.steeringTorqueEps = pt_cp.vl["EPS_3"]["EPS_TORQUE"]
     ret.steeringTorqueEps = pt_cp.vl["EPS_2"]["EPS_TORQUE"]
     ret.steeringPressed = abs(ret.steeringTorque) > 80
     ret.yawRate = pt_cp.vl["ABS_2"]["YAW_RATE"]
@@ -50,10 +49,6 @@ class CarState(CarStateBase):
       ret.gearShifter = GearShifter.reverse
     else:
       ret.gearShifter = GearShifter.drive
-
-    #ret.cruiseState.available = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (1, 2, 3)
-    #ret.cruiseState.enabled = pt_cp.vl["ACC_1"]["CRUISE_STATUS"] in (2, 3)
-    #ret.cruiseState.speed = pt_cp.vl["ACC_1"]["HUD_SPEED"] * CV.KPH_TO_MS
 
     ret.cruiseState.available = bool(cp_body.vl["ACC_4"]["ACC_AVAILABLE"])
     ret.cruiseState.enabled = cp_body.vl["ACC_2"]["ACC_ACTIVE"] in (6, 7, 8)
