@@ -106,7 +106,7 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
   // TODO: find cruise button message
 
   if ((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_ENGINE_2)) {
-    gas_pressed = ((GET_BYTE(to_push, 1) >> 5) | (GET_BYTE(to_push, 0) & 0x1FU << 3)) != 0U;
+    gas_pressed = ((GET_BYTE(to_push, 1) >> 5) | (GET_BYTE(to_push, 0) & 0x1FU << 3)) > 0U;
   }
 
   // Signal: ABS_3.BRAKE_PEDAL_SWITCH
