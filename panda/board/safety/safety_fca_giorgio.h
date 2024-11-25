@@ -111,7 +111,8 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
       gas_pressed = true;
     } else {
       gas_pressed = false;
-  } 
+    }
+  }  
     
   // Signal: ABS_3.BRAKE_PEDAL_SWITCH
   if ((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_ABS_3)) {
