@@ -103,8 +103,7 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
     uint32_t wheel_speed_fr = (GET_BYTE(to_push, 3) >> 6) | (GET_BYTE(to_push, 2) << 2) | ((GET_BYTE(to_push, 1) & 0x7U) << 10);
     uint32_t wheel_speed_rl = (GET_BYTE(to_push, 4) >> 1) | ((GET_BYTE(to_push, 3) & 0x3FU) << 7);
     uint32_t wheel_speed_rr = (GET_BYTE(to_push, 6) >> 4) | (GET_BYTE(to_push, 5) << 4) | ((GET_BYTE(to_push, 4) & 0x1U) << 12);
-    //vehicle_moving = (wheel_speed_fl + wheel_speed_fr + wheel_speed_rl + wheel_speed_rr) > 0;
-    vehicle_moving = (wheel_speed_fl > 0U) || (wheel_speed_fr > 0U) || (wheel_speed_rl > 0U) || (wheel_speed_rr > 0U);
+    vehicle_moving = (wheel_speed_fl + wheel_speed_fr + wheel_speed_rl + wheel_speed_rr) > 0;
   }
 
   if ((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_EPS_2)) {
@@ -116,11 +115,7 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
 
   if ((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_ENGINE_2)) {
     int gas_pedal = ((GET_BYTE(to_push, 1) >> 5) | (GET_BYTE(to_push, 0) & 0x1FU << 3));
-    if (gas_pedal > 0) {
-      gas_pressed = true;
-    } else {
-      gas_pressed = false;
-    }
+    gas_pressed = gas_pedal > 0;
   }  
     
   // Signal: ABS_3.BRAKE_PEDAL_SWITCH
@@ -144,13 +139,14 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
   
   // If steering controls messages are received on the destination bus, it's an indication
   // that the relay might be malfunctioning
-  //bool stock_ecu_detected = false;
-  //if  ((addr == FCA_GIORGIO_LKA_COMMAND) || (addr == FCA_GIORGIO_LKA_HUD_2) || (addr == FCA_GIORGIO_ACC_1)) {
-  //  if (GET_BUS(to_push) == 0U)
-  //    stock_ecu_detected = true;
-  //  }
+  bool stock_ecu_detected = false;
+  if  ((addr == FCA_GIORGIO_LKA_COMMAND) || (addr == FCA_GIORGIO_LKA_HUD_2) || (addr == FCA_GIORGIO_ACC_1)) {
+    if (GET_BUS(to_push) == 0U)
+      stock_ecu_detected = true;
+    }
+  //generic_rx_checks(stock_ecu_detected);
 
-  generic_rx_checks((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_LKA_COMMAND));
+  generic_rx_checks((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_LKA_COMMAND),stock_ecu_detected);
 }
 
 static bool fca_giorgio_tx_hook(const CANPacket_t *to_send) {
