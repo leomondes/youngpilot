@@ -36,15 +36,14 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
     values = {"ACC_ACTIVE": 7 if enable else 0}
     return self.packer.make_can_msg_panda("ACC_2", 1, values)
 
-  #def _speed_msg(self, speed):
-  #  values = {"WHEEL_SPEED_%s" % s: speed for s in ["FL", "FR", "RL", "RR"]}
-  #  return self.packer.make_can_msg_panda("ABS_1", 0, values)
+  def _speed_msg(self, speed):
+    values = {"WHEEL_SPEED_%s" % s: speed for s in ["FL", "FR", "RL", "RR"]}
+    return self.packer.make_can_msg_panda("ABS_1", 0, values)
 
-  #def _speed_msg(self, speed):
-  #  values = {"VEHICLE_SPEED": speed}
-  #  return self.packer.make_can_msg_panda("ABS_6", 0, values)
+  def _speed_msg_2(self, speed):
+    values = {"VEHICLE_SPEED": speed}
+    return self.packer.make_can_msg_panda("ABS_6", 0, values)
 
-  # Standstill state
   def _vehicle_moving_msg(self, speed: float):
     values = {"VEHICLE_SPEED": 0 if speed <= self.STANDSTILL_THRESHOLD else 5}
     return self.packer.make_can_msg_panda("ABS_6", 0, values)
@@ -66,7 +65,8 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
 
   def test_rx_hook(self):
     for count in range(20):
-      self.assertTrue(self._rx(self._speed_msg(0)), f"{count=}")
+      #self.assertTrue(self._rx(self._speed_msg(0)), f"{count=}")
+      self.assertTrue(self._rx(self._speed_msg_2(0)), f"{count=}")
       self.assertTrue(self._rx(self._user_brake_msg(False)), f"{count=}")
       self.assertTrue(self._rx(self._torque_meas_msg(0)), f"{count=}")
       self.assertTrue(self._rx(self._user_gas_msg(0)), f"{count=}")
