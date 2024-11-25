@@ -26,7 +26,7 @@ class CarState(CarStateBase):
     )
 
     #ret.vEgoRaw = float(np.mean([ret.wheelSpeeds.fl, ret.wheelSpeeds.fr, ret.wheelSpeeds.rl, ret.wheelSpeeds.rr]))
-    ret.vEgoRaw = cp.vl["ABS_6"]["VEHICLE_SPEED"] * CV.KPH_TO_MS
+    ret.vEgoRaw = pt_cp.vl["ABS_6"]["VEHICLE_SPEED"] * CV.KPH_TO_MS
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
     ret.standstill = ret.vEgoRaw == 0
 
