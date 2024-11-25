@@ -31,8 +31,8 @@ const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 4}, {FCA_GIOR
 // TODO: reenable checksums/counters on ABS_1 and EPS_3 once checksums are bruteforced
 RxCheck fca_giorgio_rx_checks[] = {
   {.msg = {{FCA_GIORGIO_ACC_2, 1, 8, .check_checksum = false, .max_counter = 0U, .frequency = 50U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_ABS_1, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_ABS_1, 0, 8, .check_checksum = true, .max_counter = 0FU, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = false, .max_counter = 0FU, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_EPS_2, 0, 7, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ENGINE_2, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
 };
@@ -45,7 +45,12 @@ static uint32_t fca_giorgio_get_checksum(const CANPacket_t *to_push) {
 }
 
 static uint8_t fca_giorgio_get_counter(const CANPacket_t *to_push) {
-  int counter_byte = GET_LEN(to_push) - 2U;
+  int addr = GET_ADDR(to_push);
+  if (addr == 0xFA) { //ABS_3 have different counter byte
+    int counter_byte = (GET_BYTE(to_push, 4U) & 0x78) >> 3;
+  else 
+    int counter_byte = GET_LEN(to_push) - 2U;
+  }
   return (uint8_t)(GET_BYTE(to_push, counter_byte) & 0xFU);
 }
 
