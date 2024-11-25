@@ -32,7 +32,7 @@ const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 4}, {FCA_GIOR
 // TODO: re-check counter/checksum for ABS_3
 // TODO: reenable checksums/counters on ABS_1 and EPS_3 once checksums are bruteforced
 RxCheck fca_giorgio_rx_checks[] = {
-  {.msg = {{FCA_GIORGIO_ABS_1, 0, 8, .check_checksum = false, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_ABS_1, 0, 8, .check_checksum = true, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ABS_2, 0, 8, .check_checksum = true, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = false, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ACC_2, 1, 8, .check_checksum = false, .max_counter = 0U, .frequency = 50U}, { 0 }, { 0 }}},
