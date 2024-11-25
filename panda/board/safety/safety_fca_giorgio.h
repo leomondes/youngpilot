@@ -67,12 +67,16 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
   }
 
   // TODO: bruteforce final XORs for Panda relevant messages
-  if (addr == 0xFFU) {
+  if (addr == 0xFF) {
     final_xor = 0xFFU;
   }
   if (addr == 0x1F6) or (addr == 0xEE) {
     final_xor = 0xFFU;  
   }
+  if (addr == 0xFA) {
+    final_xor = 0x55U;
+  }
+  
 
   return (uint8_t)(crc ^ final_xor);
 }
