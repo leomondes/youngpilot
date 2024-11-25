@@ -24,6 +24,7 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
 #define FCA_GIORGIO_ENGINE_2        0x1f0
 #define FCA_GIORGIO_EPS_1           0xDE
 #define FCA_GIORGIO_ENGINE_1        0xFC
+#define FCA_GIORGIO_ABS_2           0xFE
 
 // TODO: need to find a button message for cancel spam
 const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 4}, {FCA_GIORGIO_LKA_HUD_2, 0, 8}, {FCA_GIORGIO_ACC_1, 0, 8}};
@@ -39,6 +40,7 @@ RxCheck fca_giorgio_rx_checks[] = {
   {.msg = {{FCA_GIORGIO_ENGINE_2, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_EPS_1, 0, 6, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ENGINE_1, 0, 8, .check_checksum = false, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_ABS_2, 0, 8, .check_checksum = false, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
 };
 
 uint8_t fca_giorgio_crc8_lut_j1850[256];  // Static lookup table for CRC8 SAE J1850
@@ -65,7 +67,7 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
   // CRC is in the last byte, poly is same as SAE J1850 but uses a different init value and output XOR
   // For some addresses it uses standard SAE J8150
   uint8_t crc = 0U;
-  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFA || addr == 0xFC || addr == 0xDE) {
+  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0xFE) {
     crc = 0xFFU;  
   }
   
@@ -77,7 +79,7 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
   // TODO: bruteforce final XORs for Panda relevant messages
   
   uint8_t final_xor = 0U;
-  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFA || addr == 0xFC || addr == 0xDE) {
+  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0xFE) {
     final_xor = 0xFFU;  
   }
 
