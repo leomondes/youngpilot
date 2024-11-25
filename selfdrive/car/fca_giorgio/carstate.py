@@ -28,7 +28,7 @@ class CarState(CarStateBase):
     #ret.vEgoRaw = float(np.mean([ret.wheelSpeeds.fl, ret.wheelSpeeds.fr, ret.wheelSpeeds.rl, ret.wheelSpeeds.rr]))
     ret.vEgoRaw = pt_cp.vl["ABS_6"]["VEHICLE_SPEED"] * CV.KPH_TO_MS
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
-    ret.standstill = ret.vEgoRaw == 0
+    ret.standstill = ret.vEgoRaw == < 0.1
 
     ret.steeringAngleDeg = pt_cp.vl["EPS_1"]["STEERING_ANGLE"]
     ret.steeringRateDeg = pt_cp.vl["EPS_1"]["STEERING_RATE"]
