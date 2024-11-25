@@ -44,8 +44,10 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
     values = {"VEHICLE_SPEED": speed}
     return self.packer.make_can_msg_panda("ABS_6", 0, values)
 
+  # Standstill state
   def _vehicle_moving_msg(self, speed: float):
-    return self._speed_msg(speed)
+    values = {"VEHICLE_SPEED": 0 if speed <= self.STANDSTILL_THRESHOLD else random.choice((1, 2, 3))}
+    return self.packer.make_can_msg_panda("ABS_6", 0, values)
 
   #def _user_gas_msg(self, gas):
   #  pass
