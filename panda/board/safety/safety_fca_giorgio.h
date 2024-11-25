@@ -48,7 +48,7 @@ static uint8_t fca_giorgio_get_counter(const CANPacket_t *to_push) {
   int addr = GET_ADDR(to_push);
   if (addr == 0xFA) { //ABS_3 have different counter byte
     int counter_byte = (GET_BYTE(to_push, 4U) & 0x78) >> 3;
-  else 
+  } else { 
     int counter_byte = GET_LEN(to_push) - 2U;
   }
   return (uint8_t)(GET_BYTE(to_push, counter_byte) & 0xFU);
