@@ -24,6 +24,7 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
 #define FCA_GIORGIO_EPS_2           0x106 // CRC-8/SAE-J1850
 #define FCA_GIORGIO_LKA_COMMAND     0x1F6 // CRC-8/SAE-J1850
 #define FCA_GIORGIO_LKA_HUD_2       0x547 // No counter and checksum
+#define FCA_GIORGIO_BCM_1           0x73E // No counter and checksum
 
 // TODO: need to find a button message for cancel spam
 const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 4}, {FCA_GIORGIO_LKA_HUD_2, 0, 8}, {FCA_GIORGIO_ACC_1, 0, 8}};
@@ -32,14 +33,17 @@ const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 4}, {FCA_GIOR
 // TODO: re-check counter/checksum for ABS_3
 // TODO: reenable checksums/counters on ABS_1 and EPS_3 once checksums are bruteforced
 RxCheck fca_giorgio_rx_checks[] = {
-  {.msg = {{FCA_GIORGIO_ABS_1, 0, 8, .check_checksum = true, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_ABS_2, 0, 8, .check_checksum = true, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = false, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_ABS_1, 0, 8, .check_checksum = true, .max_counter = 15U, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_ABS_2, 0, 8, .check_checksum = true, .max_counter = 15U, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = false, .max_counter = 15U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ACC_2, 1, 8, .check_checksum = false, .max_counter = 0U, .frequency = 50U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_ENGINE_1, 0, 8, .check_checksum = true, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_ACC_3, 1, 4, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_ACC_4, 1, 8, .check_checksum = false, .max_counter = 0U, .frequency = 1U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_ENGINE_1, 0, 8, .check_checksum = true, .max_counter = 15U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ENGINE_2, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_EPS_1, 0, 6, .check_checksum = true, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_EPS_2, 0, 7, .check_checksum = false, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_EPS_1, 0, 6, .check_checksum = true, .max_counter = 15U, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_EPS_2, 0, 7, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_BCM_1, 0, 4, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
 };
 
 uint8_t fca_giorgio_crc8_lut_j1850[256];  // Static lookup table for CRC8 SAE J1850
@@ -103,7 +107,8 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
     uint32_t wheel_speed_fr = (GET_BYTE(to_push, 3) >> 6) | (GET_BYTE(to_push, 2) << 2) | ((GET_BYTE(to_push, 1) & 0x7U) << 10);
     uint32_t wheel_speed_rl = (GET_BYTE(to_push, 4) >> 1) | ((GET_BYTE(to_push, 3) & 0x3FU) << 7);
     uint32_t wheel_speed_rr = (GET_BYTE(to_push, 6) >> 4) | (GET_BYTE(to_push, 5) << 4) | ((GET_BYTE(to_push, 4) & 0x1U) << 12);
-    vehicle_moving = (wheel_speed_fl + wheel_speed_fr + wheel_speed_rl + wheel_speed_rr) > 0;
+    // vehicle_moving = (wheel_speed_fl + wheel_speed_fr + wheel_speed_rl + wheel_speed_rr) > 0;
+    bool vehicle_moving = (wheel_speed_fl > 0U) || (wheel_speed_fr > 0U) || (wheel_speed_rl > 0U) || (wheel_speed_rr > 0U);
   }
 
   if ((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_EPS_2)) {
@@ -115,12 +120,12 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
 
   if ((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_ENGINE_2)) {
     int gas_pedal = ((GET_BYTE(to_push, 1) >> 5) | (GET_BYTE(to_push, 0) & 0x1FU << 3));
-    gas_pressed = gas_pedal > 0;
+    bool gas_pressed = gas_pedal > 0;
   }  
     
   // Signal: ABS_3.BRAKE_PEDAL_SWITCH
   if ((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_ABS_3)) {
-    brake_pressed = GET_BIT(to_push, 3);
+    bool brake_pressed = GET_BIT(to_push, 3);
   }
   
   if ((GET_BUS(to_push) == 1U) && (addr == FCA_GIORGIO_ACC_2)) {
