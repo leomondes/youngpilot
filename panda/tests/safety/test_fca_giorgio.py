@@ -8,7 +8,7 @@ from panda.tests.safety.common import CANPackerPanda
 
 class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteeringSafetyTest):
   TX_MSGS = [[0x1F6, 0], [0x547, 0], [0x5A2, 0]]
-  STANDSTILL_THRESHOLD = 0
+  STANDSTILL_THRESHOLD = 0.1
   RELAY_MALFUNCTION_ADDRS = {0: [0x1F6,0x547,0x5A2]}
   FWD_BLACKLISTED_ADDRS = {2: [0x1F6,0x547,0x5A2]}
   FWD_BUS_LOOKUP = {0: 2, 2: 0}
@@ -40,6 +40,10 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
     values = {"WHEEL_SPEED_%s" % s: speed for s in ["FL", "FR", "RL", "RR"]}
     return self.packer.make_can_msg_panda("ABS_1", 0, values)
 
+  def _vehicle_moving_msg(self, speed: float):
+    values = {"VEHICLE_MOVING": 0 if speed <= self.STANDSTILL_THRESHOLD else 1}
+    return self.packer.make_can_msg_panda("BCM_2", 0, values)
+ 
   #def _user_gas_msg(self, gas):
   #  pass
 
