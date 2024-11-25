@@ -37,8 +37,7 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
     return self.packer.make_can_msg_panda("ACC_2", 1, values)
 
   def _speed_msg(self, speed):
-  #  values = {"WHEEL_SPEED_%s" % s: speed for s in ["FL", "FR", "RL", "RR"]}
-    values = {"WHEEL_SPEED_FL": speed}
+    values = {"WHEEL_SPEED_%s" % s: speed for s in ["FL", "FR", "RL", "RR"]}
     return self.packer.make_can_msg_panda("ABS_1", 0, values)
 
   def _speed_msg_2(self, speed):
