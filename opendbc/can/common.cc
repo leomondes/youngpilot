@@ -255,7 +255,7 @@ unsigned int fca_giorgio_checksum(uint32_t address, const Signal &sig, const std
   // CRC is in the last byte, poly is same as SAE J1850 but uses a different init value and output XOR
   // For LKA Command (0x1F6) uses standard SAE J8150
   uint8_t crc = 0x00;
-  int addr = address
+  int addr = address;
  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0x106) {
     crc = 0xFFU;  
   }
