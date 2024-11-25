@@ -268,7 +268,7 @@ unsigned int fca_giorgio_checksum(uint32_t address, const Signal &sig, const std
   if (addr == 0x1F6 || addr == 0xEE || addr == 0xFE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0x106) {
     crc ^= 0xFF;  
   } else {
-    crc ^= 0xA;
+    crc ^= 0x0;
   }
 
   return crc;
