@@ -67,7 +67,7 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
   // For some addresses it uses standard SAE J8150
   uint8_t crc = 0U;
   if (addr == 0x1F6 || addr == 0xEE || addr == 0xFE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0x106) {
-    crc = 0xFFU;  
+    crc = 0xFF;  
   }
   
   for (int i = 0; i < len - 1; i++) {
@@ -79,7 +79,7 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
   
   uint8_t final_xor = 0U;
   if (addr == 0x1F6 || addr == 0xEE || addr == 0xFE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0x106) {
-    final_xor = 0xFFU;  
+    final_xor = 0xFF;  
   }
 
   return (uint8_t)(crc ^ final_xor);

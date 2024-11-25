@@ -257,7 +257,7 @@ unsigned int fca_giorgio_checksum(uint32_t address, const Signal &sig, const std
   uint8_t crc = 0x00;
   int addr = address;
  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0x106) {
-    crc = 0xFFU;  
+    crc = 0xFF;  
   }
   
   for (int i = 0; i < d.size() - 1; i++) {
@@ -266,9 +266,10 @@ unsigned int fca_giorgio_checksum(uint32_t address, const Signal &sig, const std
   }
 
   if (addr == 0x1F6 || addr == 0xEE || addr == 0xFE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0x106) {
-    return crc ^ 0xFFU;  
+    crc ^= 0xFF;  
   } else {
-    return crc ^ 0xA;
+    crc ^= 0x0 //0xA;
   }
 
+  return crc;
 }
