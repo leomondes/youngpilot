@@ -44,9 +44,6 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
     values = {"VEHICLE_SPEED": speed}
     return self.packer.make_can_msg_panda("ABS_6", 0, values)
 
-  #def _user_gas_msg(self, gas):
-  #  pass
-
   def _user_brake_msg(self, brake):
     values = {"BRAKE_PEDAL_SWITCH": 1 if brake else 0}
     return self.packer.make_can_msg_panda("ABS_3", 0, values)
