@@ -33,13 +33,13 @@ const CanMsg FCA_GIORGIO_TX_MSGS[] = {{FCA_GIORGIO_LKA_COMMAND, 0, 4}, {FCA_GIOR
 // TODO: reenable checksums/counters on ABS_1 and EPS_3 once checksums are bruteforced
 RxCheck fca_giorgio_rx_checks[] = {
   {.msg = {{FCA_GIORGIO_ABS_1, 0, 8, .check_checksum = false, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_ABS_2, 0, 8, .check_checksum = false, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = false, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_ABS_2, 0, 8, .check_checksum = true, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = true, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ACC_2, 1, 8, .check_checksum = false, .max_counter = 0U, .frequency = 50U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_ENGINE_1, 0, 8, .check_checksum = false, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_ENGINE_1, 0, 8, .check_checksum = true, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ENGINE_2, 0, 8, .check_checksum = false, .max_counter = 0U, .frequency = 100U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_EPS_1, 0, 6, .check_checksum = false, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
-  {.msg = {{FCA_GIORGIO_EPS_2, 0, 7, .check_checksum = false, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_EPS_1, 0, 6, .check_checksum = true, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_EPS_2, 0, 7, .check_checksum = true, .max_counter = 0xFU, .frequency = 100U}, { 0 }, { 0 }}},
 };
 
 uint8_t fca_giorgio_crc8_lut_j1850[256];  // Static lookup table for CRC8 SAE J1850
@@ -87,7 +87,7 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
 
 static safety_config fca_giorgio_init(uint16_t param) {
   UNUSED(param);
-  
+
   gas_pressed_prev = false;
   brake_pressed_prev = false;
 
