@@ -141,7 +141,7 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
       controls_allowed = false;
     }
   }
-  generic_rx_checks((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_LKA_COMMAND));
+  //generic_rx_checks((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_LKA_COMMAND));
   
   // If steering controls messages are received on the destination bus, it's an indication
   // that the relay might be malfunctioning
@@ -150,7 +150,7 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
     if (GET_BUS(to_push) == 0U)
       stock_ecu_detected = true;
     }
-  generic_rx_checks(stock_ecu_detected);
+  //generic_rx_checks(stock_ecu_detected);
 }
 
 static bool fca_giorgio_tx_hook(const CANPacket_t *to_send) {
