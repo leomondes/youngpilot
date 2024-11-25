@@ -120,12 +120,12 @@ static void fca_giorgio_rx_hook(const CANPacket_t *to_push) {
 
   if ((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_ENGINE_2)) {
     int gas_pedal = ((GET_BYTE(to_push, 1) >> 5) | (GET_BYTE(to_push, 0) & 0x1FU << 3));
-    bool gas_pressed = gas_pedal > 0;
+    gas_pressed = gas_pedal > 0;
   }  
     
   // Signal: ABS_3.BRAKE_PEDAL_SWITCH
   if ((GET_BUS(to_push) == 0U) && (addr == FCA_GIORGIO_ABS_3)) {
-    bool brake_pressed = GET_BIT(to_push, 3);
+    brake_pressed = GET_BIT(to_push, 3);
   }
   
   if ((GET_BUS(to_push) == 1U) && (addr == FCA_GIORGIO_ACC_2)) {
