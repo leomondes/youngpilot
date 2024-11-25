@@ -54,27 +54,22 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
   int len = GET_LEN(to_push);
 
   // CRC is in the last byte, poly is same as SAE J1850 but uses a different init value and output XOR
-  // For LKA Command (0x1F6) uses standard SAE J8150
+  // For some addresses it uses standard SAE J8150
   uint8_t crc = 0U;
-  if (addr == 0x1F6 || addr == 0xEE) {
-    crc = 0xFF;  
+  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFA) {
+    crc = 0xFFU;  
   }
-  uint8_t final_xor = 0U;
-
+  
   for (int i = 0; i < len - 1; i++) {
     crc ^= (uint8_t)GET_BYTE(to_push, i);
     crc = fca_giorgio_crc8_lut_j1850[crc];
   }
 
   // TODO: bruteforce final XORs for Panda relevant messages
-  if (addr == 0xFF) {
-    final_xor = 0xFFU;
-  }
-  if (addr == 0x1F6 || addr == 0xEE) {
+  
+  uint8_t final_xor = 0U;
+  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFA) {
     final_xor = 0xFFU;  
-  }
-  if (addr == 0xFA) {
-    final_xor = 0x55U;
   }
 
   return (uint8_t)(crc ^ final_xor);
