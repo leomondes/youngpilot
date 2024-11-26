@@ -72,7 +72,7 @@ class CarState(CarStateBase):
       ("ABS_1", 100),
       ("ABS_2", 100),
       ("ABS_3", 100),
-      ("ABS_4", 100),
+      ("ABS_4", 50),
       ("ABS_6", 100),
       ("ENGINE_1", 100),
       ("ENGINE_2", 50),
@@ -95,7 +95,7 @@ class CarState(CarStateBase):
     messages = [
       # sig_address, frequency
       ("ACC_2", 50), #from cabana
-      ("ACC_3", 100),
+      ("ACC_3", 50),
       ("ACC_4", 1), #from cabana
     ]
 

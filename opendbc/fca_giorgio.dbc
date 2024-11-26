@@ -185,6 +185,8 @@ BO_ 762 ACC_3: 4 XXX
  SG_ SPEED_PLUS : 5|1@0+ (1,0) [0|1] "" XXX
  SG_ DISTANCE : 6|1@0+ (1,0) [0|1] "" XXX
  SG_ CANCEL : 7|1@0+ (1,0) [0|1] "" XXX
+ SG_ XCOUNTER : 11|4@0+ (1,0) [0|15] "" XXX
+ SG_ XCHECKSUM : 23|8@0+ (1,0) [0|255] "" XXX
 
 BO_ 896 CAM_UNKNOWN_3: 8 XXX
  SG_ NEW_SIGNAL_1 : 3|2@0+ (1,0) [0|3] "" XXX
