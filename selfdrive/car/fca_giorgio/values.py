@@ -19,7 +19,6 @@ class CarControllerParams:
    self.STEER_DELTA_UP = 4
    self.STEER_DELTA_DOWN = 4
 
-STEER_THRESHOLD = 120
 
 class CANBUS:
   pt = 0
