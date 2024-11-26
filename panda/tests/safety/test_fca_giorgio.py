@@ -23,6 +23,10 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
   DRIVER_TORQUE_ALLOWANCE = 80
   DRIVER_TORQUE_FACTOR = 3
 
+  cnt_speed = 0
+  cnt_gas = 0
+  cnt_brake = 0
+
   def setUp(self):
     self.packer = CANPackerPanda("fca_giorgio")
     self.safety = libpanda_py.libpanda
