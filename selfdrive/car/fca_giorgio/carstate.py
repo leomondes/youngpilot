@@ -7,7 +7,7 @@ from openpilot.selfdrive.car.fca_giorgio.values import DBC, CANBUS, CarControlle
 
 
 GearShifter = car.CarState.GearShifter
-STANDSTILL_THRESHOLD = 0.1
+STANDSTILL_THRESHOLD = 0
 
 class CarState(CarStateBase):
   def __init__(self, CP):
