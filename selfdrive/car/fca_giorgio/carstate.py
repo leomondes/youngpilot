@@ -38,7 +38,6 @@ class CarState(CarStateBase):
     ret.steeringPressed = abs(ret.steeringTorque) > 80
     ret.yawRate = pt_cp.vl["ABS_2"]["YAW_RATE"]
     ret.steerFaultPermanent = bool(pt_cp.vl["EPS_2"]["LKA_FAULT"])
-    # removed steer fault for test purpose
 
     # TODO: unsure if this is accel pedal or engine throttle
     #ret.gas = pt_cp.vl["ENGINE_1"]["ACCEL_PEDAL"]

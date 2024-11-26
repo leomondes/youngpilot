@@ -1,7 +1,7 @@
 def create_steering_control(packer, bus, apply_steer, cruise_state):
   values = {
     "LKA_TORQUE": apply_steer,
-    "LKA_ENABLED": 1 if cruise_state else 0,
+    "LKA_ENABLED": cruise_state,
   }
 
   return packer.make_can_msg("LKA_COMMAND", bus, values)
@@ -10,7 +10,7 @@ def create_lka_hud_2_control(packer, bus, cruise_state, high_beam):
   values = {
     "LKA_ACTIVE": 6 if cruise_state else 1,
     "NEW_SIGNAL_1": 1,
-    "HIGH_BEAM_ALLOWED": 1 if high_beam else 0,
+    "HIGH_BEAM_ALLOWED": high_beam,
   }
 
   return packer.make_can_msg("LKA_HUD_2", bus, values)
