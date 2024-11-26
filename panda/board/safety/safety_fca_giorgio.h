@@ -19,7 +19,7 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
 #define FCA_GIORGIO_ACC_3           0x2FA // CRC-8/SAE-J1850 not regular bits
 #define FCA_GIORGIO_ACC_4           0x73C // No counter and checksum
 #define FCA_GIORGIO_ENGINE_1        0xFC // CRC-8/SAE-J1850
-#define FCA_GIORGIO_ENGINE_2        0x1f0 // No counter and checksum
+#define FCA_GIORGIO_ENGINE_2        0x1F0 // No counter and checksum
 #define FCA_GIORGIO_EPS_1           0xDE // CRC-8/SAE-J1850
 #define FCA_GIORGIO_EPS_2           0x106 // CRC-8/SAE-J1850
 #define FCA_GIORGIO_LKA_COMMAND     0x1F6 // CRC-8/SAE-J1850
