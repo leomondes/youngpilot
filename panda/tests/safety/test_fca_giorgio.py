@@ -49,7 +49,9 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
     return self.packer.make_can_msg_panda("ABS_3", 0, values)
 
   def _user_gas_msg(self, gas_pressed=1):
-    values = {"ACCEL_PEDAL_FOOT": 1 if gas_pressed > 0 else 0}
+    values = {"ACCEL_PEDAL_FOOT": gas_pressed}
+    if gas_pressed is None:
+      gas_pressed = self.safety.get_gas_pressed_prev()
     return self.packer.make_can_msg_panda("ENGINE_2", 0, values)
 
   def _torque_meas_msg(self, torque):
@@ -64,7 +66,7 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
     for count in range(20):
       self.assertTrue(self._rx(self._speed_msg(0)), f"{count=}")
       self.assertTrue(self._rx(self._user_brake_msg(False)), f"{count=}")
-      self.assertTrue(self._rx(self._user_gas_msg(False)), f"{count=}")
+      self.assertTrue(self._rx(self._user_gas_msg(0)), f"{count=}")
       self.assertTrue(self._rx(self._torque_meas_msg(0)), f"{count=}")
       self.assertTrue(self._rx(self._pcm_status_msg(False)), f"{count=}")
 
