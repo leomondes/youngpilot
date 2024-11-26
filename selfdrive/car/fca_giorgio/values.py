@@ -19,6 +19,8 @@ class CarControllerParams:
    self.STEER_DELTA_UP = 4
    self.STEER_DELTA_DOWN = 4
 
+   self.DEFAULT_MIN_STEER_SPEED = 14.0            # m/s, newer EPS racks fault below this speed, don't show a low speed alert
+
 
 class CANBUS:
   pt = 0
@@ -35,6 +37,7 @@ class FcaGiorgioPlatformConfig(PlatformConfig):
 class FcaGiorgioCarSpecs(CarSpecs):
   centerToFrontRatio: float = 0.45
   steerRatio: float = 14.2
+  minSteerSpeed: float = CarControllerParams.DEFAULT_MIN_STEER_SPEED
 
 
 @dataclass
@@ -46,8 +49,8 @@ class FcaGiorgioCarDocs(CarDocs):
 class CAR(Platforms):
   config: FcaGiorgioPlatformConfig
 
-  ALFA_ROMEO_STELVIO_1ST_GEN = FcaGiorgioPlatformConfig(
-    [FcaGiorgioCarDocs("Alfa Romeo Stelvio 2017-24")],
+  JEEP_RENEGADE_MY22 = FcaGiorgioPlatformConfig(
+    [FcaGiorgioCarDocs("Jeep Renegade 4xe Hybrid 2022")],
     FcaGiorgioCarSpecs(mass=1660, wheelbase=2.82),
   )
 

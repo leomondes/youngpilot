@@ -37,7 +37,7 @@ class CarState(CarStateBase):
     ret.steeringTorqueEps = pt_cp.vl["EPS_2"]["EPS_TORQUE"]
     ret.steeringPressed = abs(ret.steeringTorque) > 80
     ret.yawRate = pt_cp.vl["ABS_2"]["YAW_RATE"]
-    #ret.steerFaultPermanent = bool(pt_cp.vl["EPS_2"]["LKA_FAULT"])
+    ret.steerFaultPermanent = bool(pt_cp.vl["EPS_2"]["LKA_FAULT"])
     # removed steer fault for test purpose
 
     # TODO: unsure if this is accel pedal or engine throttle
@@ -56,6 +56,8 @@ class CarState(CarStateBase):
     ret.cruiseState.available = bool(cp_body.vl["ACC_4"]["ACC_AVAILABLE"])
     ret.cruiseState.enabled = cp_body.vl["ACC_2"]["ACC_ACTIVE"] in (6, 7, 8)
     ret.cruiseState.speed = cp_body.vl["ACC_4"]["ACC_SPEED"] * CV.KPH_TO_MS
+
+    ret.stockAeb = bool(cam_cp.vl["LKA_HUD_2"]["HIGH_BEAM_ALLOWED"])
 
     ret.leftBlinker = bool(pt_cp.vl["BCM_1"]["LEFT_TURN_STALK"])
     ret.rightBlinker = bool(pt_cp.vl["BCM_1"]["RIGHT_TURN_STALK"])
@@ -87,7 +89,9 @@ class CarState(CarStateBase):
 
   @staticmethod
   def get_cam_can_parser(CP):
-    messages = []
+    messages = [
+      ("LKA_HUD_2", 4),
+    ]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, CANBUS.cam)
 

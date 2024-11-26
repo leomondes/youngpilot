@@ -20,8 +20,7 @@ class CarController(CarControllerBase):
     can_sends = []
 
     cruise_state = CS.out.cruiseState.enabled
-    #cruise_state = CS.out.cruiseState.available
-    car_speed = CS.out.vEgo
+    high_beam = CS.out.stockAeb
 
     # **** Steering Controls ************************************************ #
 
@@ -33,15 +32,15 @@ class CarController(CarControllerBase):
         apply_steer = 0
 
       self.apply_steer_last = apply_steer
-      can_sends.append(fca_giorgiocan.create_steering_control(self.packer_pt, CANBUS.pt, apply_steer, cruise_state, car_speed))
+      can_sends.append(fca_giorgiocan.create_steering_control(self.packer_pt, CANBUS.pt, apply_steer, cruise_state))
 
     # **** HUD Controls ***************************************************** #
 
     if self.frame % self.CCP.HUD_2_STEP == 0:
-      can_sends.append(fca_giorgiocan.create_lka_hud_2_control(self.packer_pt, CANBUS.pt, apply_steer, cruise_state, car_speed))
+      can_sends.append(fca_giorgiocan.create_lka_hud_2_control(self.packer_pt, CANBUS.pt, cruise_state, high_beam))
     
     if self.frame % self.CCP.ACC_1_STEP == 0:
-      can_sends.append(fca_giorgiocan.create_acc_1_control(self.packer_pt, CANBUS.pt, apply_steer, cruise_state, car_speed))
+      can_sends.append(fca_giorgiocan.create_acc_1_control(self.packer_pt, CANBUS.pt, apply_steer))
 
     new_actuators = actuators.as_builder()
     new_actuators.steer = self.apply_steer_last / self.CCP.STEER_MAX
