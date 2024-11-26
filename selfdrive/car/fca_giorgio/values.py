@@ -19,8 +19,6 @@ class CarControllerParams:
    self.STEER_DELTA_UP = 4
    self.STEER_DELTA_DOWN = 4
 
-   DEFAULT_MIN_STEER_SPEED = 14.0            # m/s, newer EPS racks fault below this speed, don't show a low speed alert
-
 
 class CANBUS:
   pt = 0
@@ -37,7 +35,7 @@ class FcaGiorgioPlatformConfig(PlatformConfig):
 class FcaGiorgioCarSpecs(CarSpecs):
   centerToFrontRatio: float = 0.45
   steerRatio: float = 14.2
-  minSteerSpeed: float = CarControllerParams.DEFAULT_MIN_STEER_SPEED
+  minSteerSpeed: float = 14.0 # m/s, newer EPS racks fault below this speed, don't show a low speed alert
 
 
 @dataclass
