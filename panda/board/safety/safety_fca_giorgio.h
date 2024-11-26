@@ -8,7 +8,7 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
   .max_rate_down = 4,
   .driver_torque_allowance = 80,
   .driver_torque_factor = 3,
-  .type = TorqueMotorLimited,
+  .type = TorqueDriverLimited,
 };
 
 #define FCA_GIORGIO_ABS_1           0xEE // CRC-8/SAE-J1850
