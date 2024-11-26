@@ -50,7 +50,7 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.MotorTorqueSteerin
 
   def _user_gas_msg(self, gas_pressed=1):
     values = {"ACCEL_PEDAL_FOOT": 1 if gas_pressed > 0 else 0}
-   return self.packer.make_can_msg_panda("ENGINE_2", 0, values)
+    return self.packer.make_can_msg_panda("ENGINE_2", 0, values)
 
   def _torque_meas_msg(self, torque):
     values = {"DRIVER_TORQUE": torque}
