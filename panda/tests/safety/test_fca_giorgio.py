@@ -8,11 +8,11 @@ from panda.tests.libpanda import libpanda_py
 
 
 class TestDefaultRxHookBase(common.PandaSafetyTest, common.DriverTorqueSteeringSafetyTest):
-  self.DRIVER_TORQUE_ALLOWANCE = 80
-  self.DRIVER_TORQUE_FACTOR = 3
+  DRIVER_TORQUE_ALLOWANCE = 80
+  DRIVER_TORQUE_FACTOR = 3
 
-  self.MAX_SAMPLE_VALS = 20
-  self.MAX_TORQUE = 300
+  MAX_SAMPLE_VALS = 20
+  MAX_TORQUE = 300
   
   def test_rx_hook(self):
     # default rx hook allows all msgs
