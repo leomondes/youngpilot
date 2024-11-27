@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import unittest
-
+import numpy as np
 import panda.tests.safety.common as common
 
 from panda import Panda
@@ -14,8 +14,16 @@ class TestDefaultRxHookBase(common.PandaSafetyTest, common.DriverTorqueSteeringS
       for addr in self.SCANNED_ADDRS:
         self.assertTrue(self._rx(common.make_msg(bus, addr, 8)), f"failed RX {addr=}")
 
-  DRIVER_TORQUE_ALLOWANCE = 0
-  DRIVER_TORQUE_FACTOR = 0
+  DRIVER_TORQUE_ALLOWANCE = 80
+  DRIVER_TORQUE_FACTOR = 3
+
+  MAX_SAMPLE_VALS = 20
+
+  def setUp(self):
+    self.packer = CANPackerPanda("fca_giorgio")
+    self.safety = libpanda_py.libpanda
+    self.safety.set_safety_hooks(Panda.SAFETY_FCA_GIORGIO, 0)
+    self.safety.init_tests()
 
   @classmethod
   def setUpClass(cls):
