@@ -53,7 +53,7 @@ class CarState(CarStateBase):
       ret.gearShifter = GearShifter.drive
 
     ret.cruiseState.available = bool(cp_body.vl["ACC_4"]["ACC_AVAILABLE"])
-    ret.cruiseState.enabled = cp_body.vl["ACC_2"]["ACC_ACTIVE"] in (6, 7, 8)
+    ret.cruiseState.enabled = cp_body.vl["ACC_2"]["ACC_ACTIVE"] in (6, 7, 8) and ret.cruiseState.available
     ret.cruiseState.speed = cp_body.vl["ACC_4"]["ACC_SPEED"] * CV.KPH_TO_MS
 
     ret.stockAeb = bool(cam_cp.vl["LKA_HUD_2"]["HIGH_BEAM_ALLOWED"])
