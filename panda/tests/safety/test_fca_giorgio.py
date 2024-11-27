@@ -24,7 +24,12 @@ class TestDefaultRxHookBase(common.PandaSafetyTest, common.DriverTorqueSteeringS
       raise unittest.SkipTest
 
   def _torque_driver_msg(self, torque):
-    pass
+    values = {"DRIVER_TORQUE": torque}
+    return self.packer.make_can_msg_panda("EPS_2", 0, values)
+  
+  def _torque_cmd_msg(self, torque, steer_req=1):
+    values = {"LKA_TORQUE": torque, "LKA_ENABLED": steer_req}
+    return self.packer.make_can_msg_panda("LKA_COMMAND", 0, values)
 
   def _reset_torque_driver_measurement(self, torque):
     for _ in range(MAX_SAMPLE_VALS):
