@@ -23,7 +23,6 @@ class TestDefaultRxHookBase(common.PandaSafetyTest, common.DriverTorqueSteeringS
       cls.safety = None
       raise unittest.SkipTest
 
-  @abc.abstractmethod
   def _torque_driver_msg(self, torque):
     pass
 
