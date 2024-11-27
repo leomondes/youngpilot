@@ -7,7 +7,7 @@ from panda import Panda
 from panda.tests.libpanda import libpanda_py
 
 
-class TestDefaultRxHookBase(common.PandaSafetyTestcommon, common.DriverTorqueSteeringSafetyTest):
+class TestDefaultRxHookBase(common.PandaSafetyTest, common.DriverTorqueSteeringSafetyTest):
   def test_rx_hook(self):
     # default rx hook allows all msgs
     for bus in range(4):
