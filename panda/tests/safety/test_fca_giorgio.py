@@ -8,10 +8,11 @@ from panda.tests.libpanda import libpanda_py
 
 
 class TestDefaultRxHookBase(common.PandaSafetyTest, common.DriverTorqueSteeringSafetyTest):
-  DRIVER_TORQUE_ALLOWANCE = 80
-  DRIVER_TORQUE_FACTOR = 3
+  self.DRIVER_TORQUE_ALLOWANCE = 80
+  self.DRIVER_TORQUE_FACTOR = 3
 
-  MAX_SAMPLE_VALS = 20
+  self.MAX_SAMPLE_VALS = 20
+  self.MAX_TORQUE = 300
   
   def test_rx_hook(self):
     # default rx hook allows all msgs
@@ -40,7 +41,7 @@ class TestDefaultRxHookBase(common.PandaSafetyTest, common.DriverTorqueSteeringS
     return self.packer.make_can_msg_panda("LKA_COMMAND", 0, values)
 
   def _reset_torque_driver_measurement(self, torque):
-    for _ in range(MAX_SAMPLE_VALS):
+    for _ in range(self.MAX_SAMPLE_VALS):
       self._rx(self._torque_driver_msg(torque))
 
   def test_non_realtime_limit_up(self):
@@ -110,7 +111,7 @@ class TestDefaultRxHookBase(common.PandaSafetyTest, common.DriverTorqueSteeringS
 
   def test_reset_driver_torque_measurements(self):
     # Tests that the driver torque measurement sample_t is reset on safety mode init
-    for t in np.linspace(-self.MAX_TORQUE, self.MAX_TORQUE, MAX_SAMPLE_VALS):
+    for t in np.linspace(-self.MAX_TORQUE, self.MAX_TORQUE, self.MAX_SAMPLE_VALS):
       self.assertTrue(self._rx(self._torque_driver_msg(t)))
 
     self.assertNotEqual(self.safety.get_torque_driver_min(), 0)
