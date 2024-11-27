@@ -1,76 +1,73 @@
 #!/usr/bin/env python3
 import unittest
+
+import panda.tests.safety.common as common
+
 from panda import Panda
 from panda.tests.libpanda import libpanda_py
-import panda.tests.safety.common as common
-from panda.tests.safety.common import CANPackerPanda
 
 
-class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.DriverTorqueSteeringSafetyTest):
-  TX_MSGS = [[0x1F6, 0], [0x547, 0], [0x5A2, 0]]
-  STANDSTILL_THRESHOLD = 0
-  RELAY_MALFUNCTION_ADDRS = {0: [0x1F6,0x547,0x5A2]}
-  FWD_BLACKLISTED_ADDRS = {2: [0x1F6,0x547,0x5A2]}
-  FWD_BUS_LOOKUP = {0: 2, 2: 0}
+class TestDefaultRxHookBase(common.PandaSafetyTest):
+  def test_rx_hook(self):
+    # default rx hook allows all msgs
+    for bus in range(4):
+      for addr in self.SCANNED_ADDRS:
+        self.assertTrue(self._rx(common.make_msg(bus, addr, 8)), f"failed RX {addr=}")
 
-  MAX_RATE_UP = 4
-  MAX_RATE_DOWN = 4
-  MAX_TORQUE_ERROR = 80
-  MAX_TORQUE = 300
-  MAX_RT_DELTA = 150
-  RT_INTERVAL = 250000
 
-  DRIVER_TORQUE_ALLOWANCE = 80
-  DRIVER_TORQUE_FACTOR = 3
+class TestNoOutput(TestDefaultRxHookBase):
+  TX_MSGS = []
 
   def setUp(self):
-    self.packer = CANPackerPanda("fca_giorgio")
     self.safety = libpanda_py.libpanda
-    self.safety.set_safety_hooks(Panda.SAFETY_FCA_GIORGIO, 0)
+    self.safety.set_safety_hooks(Panda.SAFETY_NOOUTPUT, 0)
     self.safety.init_tests()
 
-  #def _button_msg(self, cancel=False, resume=False):
-  #  pass
 
-  def _pcm_status_msg(self, enable):
-    values = {"ACC_ACTIVE": 7 if enable else 0}
-    return self.packer.make_can_msg_panda("ACC_2", 1, values)
+class TestSilent(TestNoOutput):
+  """SILENT uses same hooks as NOOUTPUT"""
 
-  def _speed_msg(self, speed):
-    values = {"WHEEL_SPEED_%s" % s: speed for s in ["FL", "FR", "RL", "RR"]}
-    return self.packer.make_can_msg_panda("ABS_1", 0, values)
+  def setUp(self):
+    self.safety = libpanda_py.libpanda
+    self.safety.set_safety_hooks(Panda.SAFETY_SILENT, 0)
+    self.safety.init_tests()
 
-  def _speed_msg_2(self, speed):
-    values = {"VEHICLE_SPEED": speed}
-    return self.packer.make_can_msg_panda("ABS_6", 0, values)
 
-  def _user_brake_msg(self, brake=1):
-    values = {"BRAKE_PEDAL_SWITCH": brake}
-    return self.packer.make_can_msg_panda("ABS_3", 0, values)
+class TestAllOutput(TestDefaultRxHookBase):
+  # Allow all messages
+  TX_MSGS = [[addr, bus] for addr in common.PandaSafetyTest.SCANNED_ADDRS
+             for bus in range(4)]
 
-  def _user_gas_msg(self, gas_pressed=1):
-    values = {"ACCEL_PEDAL_FOOT": 1 if gas_pressed > 0 else 0}
-    return self.packer.make_can_msg_panda("ENGINE_2", 0, values)
+  def setUp(self):
+    self.safety = libpanda_py.libpanda
+    self.safety.set_safety_hooks(Panda.SAFETY_ALLOUTPUT, 0)
+    self.safety.init_tests()
 
-  def _torque_driver_msg(self, torque):
-    values = {"DRIVER_TORQUE": torque}
-    return self.packer.make_can_msg_panda("EPS_2", 0, values)
+  def test_spam_can_buses(self):
+    # asserts tx allowed for all scanned addrs
+    for bus in range(4):
+      for addr in self.SCANNED_ADDRS:
+        should_tx = [addr, bus] in self.TX_MSGS
+        self.assertEqual(should_tx, self._tx(common.make_msg(bus, addr, 8)), f"allowed TX {addr=} {bus=}")
 
-  def _torque_meas_msg(self, torque):
-    values = {"EPS_TORQUE": torque}
-    return self.packer.make_can_msg_panda("EPS_2", 0, values)
+  def test_default_controls_not_allowed(self):
+    # controls always allowed
+    self.assertTrue(self.safety.get_controls_allowed())
 
-  def _torque_cmd_msg(self, torque, steer_req=1):
-    values = {"LKA_TORQUE": torque, "LKA_ENABLED": steer_req}
-    return self.packer.make_can_msg_panda("LKA_COMMAND", 0, values)
+  def test_tx_hook_on_wrong_safety_mode(self):
+    # No point, since we allow all messages
+    pass
 
-  def test_rx_hook(self):
-    for count in range(20):
-      self.assertTrue(self._rx(self._speed_msg(0)), f"{count=}")
-      self.assertTrue(self._rx(self._user_brake_msg(True)), f"{count=}")
-      self.assertTrue(self._rx(self._user_gas_msg(True)), f"{count=}")
-      self.assertTrue(self._rx(self._torque_meas_msg(0)), f"{count=}")
-      self.assertTrue(self._rx(self._pcm_status_msg(False)), f"{count=}")
+
+class TestAllOutputPassthrough(TestAllOutput):
+  FWD_BLACKLISTED_ADDRS = {}
+  FWD_BUS_LOOKUP = {0: 2, 2: 0}
+
+  def setUp(self):
+    self.safety = libpanda_py.libpanda
+    self.safety.set_safety_hooks(Panda.SAFETY_ALLOUTPUT, 1)
+    self.safety.init_tests()
+
 
 if __name__ == "__main__":
   unittest.main()
