@@ -8,16 +8,16 @@ from panda.tests.libpanda import libpanda_py
 
 
 class TestDefaultRxHookBase(common.PandaSafetyTest, common.DriverTorqueSteeringSafetyTest):
+  DRIVER_TORQUE_ALLOWANCE = 80
+  DRIVER_TORQUE_FACTOR = 3
+
+  MAX_SAMPLE_VALS = 20
+  
   def test_rx_hook(self):
     # default rx hook allows all msgs
     for bus in range(4):
       for addr in self.SCANNED_ADDRS:
         self.assertTrue(self._rx(common.make_msg(bus, addr, 8)), f"failed RX {addr=}")
-
-  DRIVER_TORQUE_ALLOWANCE = 80
-  DRIVER_TORQUE_FACTOR = 3
-
-  MAX_SAMPLE_VALS = 20
 
   def setUp(self):
     self.packer = CANPackerPanda("fca_giorgio")
