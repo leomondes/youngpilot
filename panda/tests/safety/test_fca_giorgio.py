@@ -53,15 +53,15 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.DriverTorqueSteeri
     return self.packer.make_can_msg_panda("ENGINE_2", 0, values)
 
   def _torque_driver_msg(self, torque):
-    values = {"DRIVER_TORQUE": abs(torque)}
+    values = {"DRIVER_TORQUE": torque}
     return self.packer.make_can_msg_panda("EPS_2", 0, values)
 
   def _torque_meas_msg(self, torque):
-    values = {"EPS_TORQUE": abs(torque)}
+    values = {"EPS_TORQUE": torque}
     return self.packer.make_can_msg_panda("EPS_2", 0, values)
 
   def _torque_cmd_msg(self, torque, steer_req=1):
-    values = {"LKA_TORQUE": abs(torque), "LKA_ENABLED": steer_req}
+    values = {"LKA_TORQUE": torque, "LKA_ENABLED": steer_req}
     return self.packer.make_can_msg_panda("LKA_COMMAND", 0, values)
 
   def test_rx_hook(self):
@@ -71,6 +71,26 @@ class TestFcaGiorgio_Safety(common.PandaCarSafetyTest, common.DriverTorqueSteeri
       self.assertTrue(self._rx(self._user_gas_msg(True)), f"{count=}")
       self.assertTrue(self._rx(self._torque_meas_msg(0)), f"{count=}")
       self.assertTrue(self._rx(self._pcm_status_msg(False)), f"{count=}")
+  
+  def test_torque_measurements(self):
+    # TODO: make this test work with all cars
+    self._rx(self._torque_driver_msg(50))
+    self._rx(self._torque_driver_msg(-50))
+    self._rx(self._torque_driver_msg(0))
+    self._rx(self._torque_driver_msg(0))
+    self._rx(self._torque_driver_msg(0))
+    self._rx(self._torque_driver_msg(0))
+
+    self.assertEqual(-50, self.safety.get_torque_driver_min())
+    self.assertEqual(50, self.safety.get_torque_driver_max())
+
+    self._rx(self._torque_driver_msg(0))
+    self.assertEqual(0, self.safety.get_torque_driver_max())
+    self.assertEqual(-50, self.safety.get_torque_driver_min())
+
+    self._rx(self._torque_driver_msg(0))
+    self.assertEqual(0, self.safety.get_torque_driver_max())
+    self.assertEqual(0, self.safety.get_torque_driver_min())
 
 if __name__ == "__main__":
   unittest.main()
