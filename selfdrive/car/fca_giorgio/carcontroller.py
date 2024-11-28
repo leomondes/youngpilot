@@ -21,7 +21,7 @@ class CarController(CarControllerBase):
 
     if CS.out.vEgo > self.CP.minSteerSpeed and CS.out.cruiseState.available:
       lkas_active = True
-    else
+    else:
       lkas_active = False
 
     # **** Steering Controls ************************************************ #
