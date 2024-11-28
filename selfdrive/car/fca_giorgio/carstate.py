@@ -56,7 +56,7 @@ class CarState(CarStateBase):
     ret.cruiseState.enabled = cp_body.vl["ACC_2"]["ACC_ACTIVE"] in (6, 7, 8) and ret.cruiseState.available
     ret.cruiseState.speed = cp_body.vl["ACC_4"]["ACC_SPEED"] * CV.KPH_TO_MS
 
-    ret.stockAeb = bool(cam_cp.vl["LKA_HUD_2"]["HIGH_BEAM_ALLOWED"])
+    self.auto_high_beam = bool(cam_cp.vl["LKA_HUD_2"]["HIGH_BEAM_ALLOWED"])
 
     ret.leftBlinker = bool(pt_cp.vl["BCM_1"]["LEFT_TURN_STALK"])
     ret.rightBlinker = bool(pt_cp.vl["BCM_1"]["RIGHT_TURN_STALK"])

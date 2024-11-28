@@ -51,7 +51,7 @@ class CarController(CarControllerBase):
     # **** HUD Controls ***************************************************** #
 
     if self.frame % self.CCP.HUD_2_STEP == 0:
-      can_sends.append(fca_giorgiocan.create_lka_hud_2_control(self.packer_pt, CANBUS.pt, lkas_control_bit, high_beam))
+      can_sends.append(fca_giorgiocan.create_lka_hud_2_control(self.packer_pt, CANBUS.pt, lkas_control_bit, CS.auto_high_beam))
     
     if self.frame % self.CCP.ACC_1_STEP == 0:
       can_sends.append(fca_giorgiocan.create_acc_1_control(self.packer_pt, CANBUS.pt, apply_steer))

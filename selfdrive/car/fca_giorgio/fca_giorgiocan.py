@@ -7,11 +7,11 @@ def create_steering_control(packer, bus, apply_steer, lkas_active):
 
   return packer.make_can_msg("LKA_COMMAND", bus, values)
 
-def create_lka_hud_2_control(packer, bus, lkas_control_bit, high_beam):
+def create_lka_hud_2_control(packer, bus, lkas_control_bit, auto_high_beam):
   values = {
     "LKA_ACTIVE": 6 if lkas_control_bit else 1,
     "NEW_SIGNAL_1": 1,
-    "HIGH_BEAM_ALLOWED": high_beam,
+    "HIGH_BEAM_ALLOWED": auto_high_beam,
   }
 
   return packer.make_can_msg("LKA_HUD_2", bus, values)
