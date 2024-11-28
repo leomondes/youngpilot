@@ -23,7 +23,6 @@ class CarController(CarControllerBase):
     can_sends = []
 
     lkas_active = CC.latActive and self.lkas_control_bit_prev
-    high_beam = CS.out.stockAeb
 
     # **** Steering Controls ************************************************ #
 
