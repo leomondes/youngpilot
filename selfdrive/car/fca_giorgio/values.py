@@ -34,7 +34,7 @@ class FcaGiorgioPlatformConfig(PlatformConfig):
 @dataclass(frozen=True, kw_only=True)
 class FcaGiorgioCarSpecs(CarSpecs):
   centerToFrontRatio: float = 0.45
-  steerRatio: float = 14.2
+  steerRatio: float = 15
   minSteerSpeed: float = 14.2 # m/s, newer EPS racks fault below this speed, don't show a low speed alert
 
 
