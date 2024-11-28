@@ -14,7 +14,7 @@ class CarControllerParams:
 
    self.STEER_MAX = 300
    self.STEER_DRIVER_ALLOWANCE = 80
-   self.STEER_DRIVER_MULTIPLIER = 3  # weight driver torque heavily
+   self.STEER_DRIVER_MULTIPLIER = 2  # weight driver torque heavily
    self.STEER_DRIVER_FACTOR = 1  # from dbc
    self.STEER_DELTA_UP = 3
    self.STEER_DELTA_DOWN = 3
@@ -35,7 +35,7 @@ class FcaGiorgioPlatformConfig(PlatformConfig):
 class FcaGiorgioCarSpecs(CarSpecs):
   centerToFrontRatio: float = 0.45
   steerRatio: float = 15
-  minSteerSpeed: float = 14.5 # m/s, newer EPS racks fault below this speed, don't show a low speed alert
+  minSteerSpeed: float = 14.0 # m/s, newer EPS racks fault below this speed, don't show a low speed alert
 
 
 @dataclass
