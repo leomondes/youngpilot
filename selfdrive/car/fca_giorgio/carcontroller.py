@@ -15,30 +15,20 @@ class CarController(CarControllerBase):
     self.apply_steer_last = 0
     self.frame = 0
     
-    self.lkas_control_bit_prev = False
-    self.last_lkas_falling_edge = 0
-
   def update(self, CC, CS, now_nanos):
     actuators = CC.actuators
     can_sends = []
 
-    lkas_active = CC.latActive and self.lkas_control_bit_prev
+    if CS.out.vEgo > self.CP.minSteerSpeed and CS.out.cruiseState.available:
+        lkas_active = True
+      else
+        lkas_active = False
 
     # **** Steering Controls ************************************************ #
 
-    lkas_control_bit = self.lkas_control_bit_prev
-    if CS.out.vEgo > self.CP.minSteerSpeed:
-      lkas_control_bit = True
-    
-    # EPS faults if LKAS re-enables too quickly
-    lkas_control_bit = lkas_control_bit and (self.frame - self.last_lkas_falling_edge > 200)
-
-    if not lkas_control_bit and self.lkas_control_bit_prev:
-      self.last_lkas_falling_edge = self.frame
-    self.lkas_control_bit_prev = lkas_control_bit
-
     if self.frame % self.CCP.STEER_STEP == 0:
-      if CC.latActive and lkas_active and lkas_control_bit:
+
+      if CC.latActive and lkas_active:
         new_steer = int(round(actuators.steer * self.CCP.STEER_MAX))
         apply_steer = apply_driver_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorque, self.CCP)
       else:
@@ -50,7 +40,7 @@ class CarController(CarControllerBase):
     # **** HUD Controls ***************************************************** #
 
     if self.frame % self.CCP.HUD_2_STEP == 0:
-      can_sends.append(fca_giorgiocan.create_lka_hud_2_control(self.packer_pt, CANBUS.pt, lkas_control_bit, CS.auto_high_beam))
+      can_sends.append(fca_giorgiocan.create_lka_hud_2_control(self.packer_pt, CANBUS.pt, lkas_active, CS.auto_high_beam))
     
     if self.frame % self.CCP.ACC_1_STEP == 0:
       can_sends.append(fca_giorgiocan.create_acc_1_control(self.packer_pt, CANBUS.pt, apply_steer))
