@@ -19,17 +19,9 @@ class CarInterface(CarInterfaceBase):
     ret.steerLimitTimer = 1.0
     ret.steerActuatorDelay = 0.1
     CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
-    
-    if candidate in (CAR.JEEP_RENEGADE_MY22):
-    # Parameters from Chrysler
-      ret.steerLimitTimer = 0.4
-      ret.steerActuatorDelay = 0.2
-      ret.lateralTuning.init('pid')
-      ret.lateralTuning.pid.kpBP, ret.lateralTuning.pid.kiBP = [[9., 20.], [9., 20.]]
-      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.15, 0.30], [0.03, 0.05]]
-      ret.lateralTuning.pid.kf = 0.00006
 
     # Global longitudinal tuning defaults, can be overridden per-vehicle
+
     ret.pcmCruise = not ret.openpilotLongitudinalControl
 
     return ret
