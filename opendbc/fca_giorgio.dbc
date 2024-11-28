@@ -174,6 +174,9 @@ BO_ 557 CAM_UNKNOWN_2: 4 XXX
 BO_ 598 CAR_UNKNOWN_1: 8 XXX
  SG_ NEW_SIGNAL_1 : 55|8@0+ (1,0) [0|63] "" XXX
 
+BO_ 599 BELTS: 8 XXX
+ SG_ DRIVER_BELT_OPEN : 21|1@0+ (1,0) [0|1] "" XXX
+
 BO_ 601 NEW_MSG_259: 8 XXX
 
 BO_ 751 NEW_MSG_2EF: 8 XXX
@@ -238,6 +241,13 @@ BO_ 1198 LKA_HUD_1: 8 CAMERA
  SG_ COUNTER : 51|4@0+ (1,0) [0|15] "" XXX
  SG_ CHECKSUM : 63|8@0+ (1,0) [0|255] "" XXX
 
+BO_ 1201 DOORS: 8 XXX
+ SG_ FL_DOOR_OPEN : 0|1@0+ (1,0) [0|1] "" XXX
+ SG_ TRUNK_OPEN : 12|1@0+ (1,0) [0|1] "" XXX
+ SG_ RR_DOOR_OPEN : 13|1@0+ (1,0) [0|1] "" XXX
+ SG_ RL_DOOR_OPEN : 14|1@0+ (1,0) [0|1] "" XXX
+ SG_ FR_DOOR_OPEN : 15|1@0+ (1,0) [0|1] "" XXX
+
 BO_ 1351 LKA_HUD_2: 8 CAMERA
  SG_ LKA_DISABLED : 30|1@0+ (1,0) [0|1] "" XXX
  SG_ HIGH_BEAM_ALLOWED : 43|1@0+ (1,0) [0|1] "" XXX
@@ -248,6 +258,10 @@ BO_ 1378 NEW_MSG_562: 8 XXX
 
 BO_ 1442 ACC_1: 8 RADAR
  SG_ LKA_CHECK : 4|1@0+ (1,0) [0|1] "" XXX
+
+BO_ 1449 ENGINE_3: 8 XXX
+ SG_ HANDBRAKE : 15|1@0+ (1,0) [0|1] "" XXX
+ SG_ GEAR : 23|3@0+ (1,0) [0|7] "" XXX
 
 BO_ 1508 CAM_UNKNOWN_4: 8 XXX
 
@@ -278,4 +292,5 @@ CM_ SG_ 282 NEW_SIGNAL_1 "smoothed yaw rate with low speed cutoff, maybe active 
 CM_ SG_ 284 VEHICLE_SPEED "scale estimated";
 CM_ SG_ 502 HAPTIC_WARN_1 "correlates with steering wheel haptic";
 CM_ BO_ 1198 "Definite LKA activity, probably contains lane-line recognition and lane departure signals, indicator of LKA vs TJA, perhaps indicator of active assist in map-permitted areas";
+CM_ SG_ 1449 GEAR "1=P,2=R,3=N,4=D,5=M";
 VAL_ 262 LKA_STATUS 0 "standby" 1 "lka_active";
