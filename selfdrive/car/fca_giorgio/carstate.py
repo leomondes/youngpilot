@@ -47,6 +47,9 @@ class CarState(CarStateBase):
     ret.brakePressed = bool(pt_cp.vl["ABS_3"]["BRAKE_PEDAL_SWITCH"])
     ret.parkingBrake = bool(pt_cp.vl["ENGINE_3"]["HANDBRAKE"]
 
+    if pt_cp.vl["ENGINE_3"]["GEAR"] == 1:
+      ret.gearShifter = GearShifter.park
+
     if bool(pt_cp.vl["ENGINE_1"]["REVERSE"]):
       ret.gearShifter = GearShifter.reverse
     else:
