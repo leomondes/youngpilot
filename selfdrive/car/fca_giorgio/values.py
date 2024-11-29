@@ -49,7 +49,7 @@ class CAR(Platforms):
 
   JEEP_RENEGADE_MY22 = FcaGiorgioPlatformConfig(
     [FcaGiorgioCarDocs("Jeep Renegade 4xe Hybrid 2022")],
-    FcaGiorgioCarSpecs(mass=1660, wheelbase=2.82),
+    FcaGiorgioCarSpecs(mass=11845, wheelbase=2.57),
   )
 
 

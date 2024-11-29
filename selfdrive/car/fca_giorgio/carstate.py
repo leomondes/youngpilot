@@ -45,7 +45,7 @@ class CarState(CarStateBase):
     ret.gasPressed = ret.gas > 0
     ret.brake = pt_cp.vl["ABS_4"]["BRAKE_PRESSURE"]
     ret.brakePressed = bool(pt_cp.vl["ABS_3"]["BRAKE_PEDAL_SWITCH"])
-    #ret.parkingBrake = TODO
+    ret.parkingBrake = bool(pt_cp.vl["ENGINE_3"]["HANDBRAKE"]
 
     if bool(pt_cp.vl["ENGINE_1"]["REVERSE"]):
       ret.gearShifter = GearShifter.reverse
@@ -78,6 +78,7 @@ class CarState(CarStateBase):
       #("ABS_6", 100),
       ("ENGINE_1", 100),
       ("ENGINE_2", 50),
+      ("ENGINE_3", 1),
       ("EPS_1", 100),
       ("EPS_2", 100),
       ("BCM_1", 4),  # 4Hz plus triggered updates
