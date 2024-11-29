@@ -27,7 +27,6 @@ class CarState(CarStateBase):
     )
 
     ret.vEgoRaw = float(np.mean([ret.wheelSpeeds.fl, ret.wheelSpeeds.fr, ret.wheelSpeeds.rl, ret.wheelSpeeds.rr]))
-    #ret.vEgoRaw = pt_cp.vl["ABS_6"]["VEHICLE_SPEED"] * CV.KPH_TO_MS # Speed from panel
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
     ret.standstill = ret.vEgoRaw < STANDSTILL_THRESHOLD
 
@@ -49,14 +48,21 @@ class CarState(CarStateBase):
 
     if pt_cp.vl["ENGINE_3"]["GEAR"] == 1:
       ret.gearShifter = GearShifter.park
-
-    if bool(pt_cp.vl["ENGINE_1"]["REVERSE"]):
+    elif pt_cp.vl["ENGINE_3"]["GEAR"] == 2:
       ret.gearShifter = GearShifter.reverse
+    elif pt_cp.vl["ENGINE_3"]["GEAR"] == 3:
+      ret.gearShifter = GearShifter.neutral
     else:
       ret.gearShifter = GearShifter.drive
 
+    #if bool(pt_cp.vl["ENGINE_1"]["REVERSE"]):
+    #  ret.gearShifter = GearShifter.reverse
+    #else:
+    #  ret.gearShifter = GearShifter.drive
+
     ret.cruiseState.available = bool(cp_body.vl["ACC_4"]["ACC_AVAILABLE"])
-    ret.cruiseState.enabled = cp_body.vl["ACC_2"]["ACC_ACTIVE"] in (6, 7, 8) and ret.cruiseState.available
+    ret.cruiseState.enabled = cp_body.vl["ACC_2"]["ACC_ACTIVE"] in (6, 7, 8) and pt_cp.vl["ABS_6"]["VEHICLE_SPEED"] > 0 
+    # add check speed/gear because when turn off car for a brief moment ACC_ACTIVE = 7
     ret.cruiseState.speed = cp_body.vl["ACC_4"]["ACC_SPEED"] * CV.KPH_TO_MS
 
     self.auto_high_beam = bool(cam_cp.vl["LKA_HUD_2"]["HIGH_BEAM_ALLOWED"])
@@ -78,7 +84,7 @@ class CarState(CarStateBase):
       ("ABS_2", 100),
       ("ABS_3", 100),
       ("ABS_4", 50),
-      #("ABS_6", 100),
+      ("ABS_6", 100),
       ("ENGINE_1", 100),
       ("ENGINE_2", 50),
       ("ENGINE_3", 1),
