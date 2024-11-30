@@ -256,7 +256,7 @@ unsigned int fca_giorgio_checksum(uint32_t address, const Signal &sig, const std
   // except for some addresses using standard SAE J1850
   uint8_t crc = 0x00;
   int addr = address;
-  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0x106) {
+  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0x106 || addr == 0x101) {
     crc = 0xFF;  
   }
   
@@ -265,7 +265,7 @@ unsigned int fca_giorgio_checksum(uint32_t address, const Signal &sig, const std
     crc = crc8_lut_j1850[crc];
   }
 
-  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0x106) {
+  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0x106 || addr == 0x101) {
     crc ^= 0xFF;  
   } else {
     crc ^= 0x0;

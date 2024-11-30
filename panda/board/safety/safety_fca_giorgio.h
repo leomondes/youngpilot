@@ -14,6 +14,7 @@ const SteeringLimits FCA_GIORGIO_STEERING_LIMITS = {
 #define FCA_GIORGIO_ABS_1           0xEE // CRC-8/SAE-J1850
 #define FCA_GIORGIO_ABS_2           0xFE // CRC-8/SAE-J1850
 #define FCA_GIORGIO_ABS_3           0xFA // CRC-8/SAE-J1850 not regular bits
+#define FCA_GIORGIO_ABS_6           0x101 // CRC-8/SAE-J1850
 #define FCA_GIORGIO_ACC_1           0x5A2 // No counter and checksum
 #define FCA_GIORGIO_ACC_2           0x1F2 // No counter and checksum
 #define FCA_GIORGIO_ACC_3           0x2FA // CRC-8/SAE-J1850 not regular bits
@@ -36,6 +37,7 @@ RxCheck fca_giorgio_rx_checks[] = {
   {.msg = {{FCA_GIORGIO_ABS_1, 0, 8, .check_checksum = false, .max_counter = 15U, .frequency = 100U}, { 0 }, { 0 }}},
   //{.msg = {{FCA_GIORGIO_ABS_2, 0, 8, .check_checksum = true, .max_counter = 15U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ABS_3, 0, 8, .check_checksum = false, .max_counter = 15U, .frequency = 100U}, { 0 }, { 0 }}},
+  {.msg = {{FCA_GIORGIO_ABS_6, 0, 8, .check_checksum = false, .max_counter = 15U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{FCA_GIORGIO_ACC_2, 1, 8, .check_checksum = false, .max_counter = 0U, .frequency = 50U}, { 0 }, { 0 }}},
   //{.msg = {{FCA_GIORGIO_ACC_3, 1, 4, .check_checksum = false, .max_counter = 0U, .frequency = 50U}, { 0 }, { 0 }}},
   //{.msg = {{FCA_GIORGIO_ACC_4, 1, 8, .check_checksum = false, .max_counter = 0U, .frequency = 1U}, { 0 }, { 0 }}},
@@ -70,7 +72,7 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
   // CRC is in the last byte, poly is same as SAE J1850 but uses a different init value and output XOR
   // For some addresses it uses standard SAE J8150
   uint8_t crc = 0U;
-  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0x106) {
+  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0x106 || addr == 0x101) {
     crc = 0xFF;  
   }
   
@@ -82,7 +84,7 @@ static uint32_t fca_giorgio_compute_crc(const CANPacket_t *to_push) {
   // TODO: bruteforce final XORs for Panda relevant messages
   
   uint8_t final_xor = 0x0;
-  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0x106) {
+  if (addr == 0x1F6 || addr == 0xEE || addr == 0xFE || addr == 0xFA || addr == 0xFC || addr == 0xDE || addr == 0x106 || addr == 0x101) {
     final_xor = 0xFF;  
   }
 
