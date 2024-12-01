@@ -16,8 +16,8 @@ class CarControllerParams:
    self.STEER_DRIVER_ALLOWANCE = 80
    self.STEER_DRIVER_MULTIPLIER = 4  # weight driver torque heavily
    self.STEER_DRIVER_FACTOR = 1  # from dbc
-   self.STEER_DELTA_UP = 6
-   self.STEER_DELTA_DOWN = 6
+   self.STEER_DELTA_UP = 2
+   self.STEER_DELTA_DOWN = 2
 
 
 class CANBUS:
